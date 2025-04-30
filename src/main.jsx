@@ -1,33 +1,26 @@
 import React, { createContext } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import App from "./App.jsx";
-import Login from "./pages/Login.jsx";
-import Checkout from "./pages/Checkout.jsx";
 import { formatarMoeda } from "./utils/formatters.js";
-import Usuario from "./pages/Usuario.jsx";
+import { AuthProvider } from "./context/AuthContext";
+import MainRoutes from "./components/MainRoutes"; // Importa o MainRoutes
 
-// Contexto global acessível a todas as rotas
 export const GlobalContext = createContext(null);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <GlobalContext.Provider value={{ formatarMoeda }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/usuario" element={<Usuario />} />
-
-          
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <MainRoutes /> {/* Usa o MainRoutes aqui */}
+        </BrowserRouter>
+      </AuthProvider>
     </GlobalContext.Provider>
   </React.StrictMode>
 );

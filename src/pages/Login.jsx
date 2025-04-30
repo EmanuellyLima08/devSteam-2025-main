@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useAuth } from "../context/AuthContext"; // novo hook
+// import "../styles/LoginCadastro.css";
 
 const LoginCadastro = () => {
   const [modoCadastro, setModoCadastro] = useState(false);
@@ -8,34 +10,45 @@ const LoginCadastro = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); // novo hook
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (modoCadastro) {
       if (nome && email && senha) {
-        localStorage.setItem(
-          "devlogin",
-          JSON.stringify({ nome, email, senha })
-        );
-        alert("Cadastro realizado com sucesso!");
-        setModoCadastro(false);
-        setNome("");
-        setEmail("");
-        setSenha("");
+        const novoUsuario = { nome, email, senha, role: "CLIENTE" };
+        try {
+          localStorage.setItem("devlogin", JSON.stringify(novoUsuario));
+          alert("Cadastro realizado com sucesso!");
+          setModoCadastro(false);
+          setNome("");
+          setEmail("");
+          setSenha("");
+        } catch (error) {
+          console.error("Erro ao salvar no localStorage:", error);
+          alert("Ocorreu um erro ao salvar os dados. Tente novamente.");
+        }
       } else {
         alert("Preencha todos os campos!");
       }
     } else {
-      const usuarioSalvo = JSON.parse(localStorage.getItem("devlogin"));
-      if (
-        usuarioSalvo &&
-        usuarioSalvo.email === email &&
-        usuarioSalvo.senha === senha
-      ) {
-        navigate("/");
-      } else {
-        alert("E-mail ou senha incorretos!");
+      try {
+        const usuarioSalvo = JSON.parse(localStorage.getItem("devlogin"));
+        if (
+          usuarioSalvo &&
+          usuarioSalvo.email === email &&
+          usuarioSalvo.senha === senha
+        ) {
+          // Salva o usuário no contexto
+          await login(usuarioSalvo);
+          navigate("/");
+        } else {
+          alert("E-mail ou senha incorretos!");
+        }
+      } catch (error) {
+        console.error("Erro ao acessar o localStorage:", error);
+        alert("Ocorreu um erro ao acessar os dados. Tente novamente.");
       }
     }
   };
@@ -45,7 +58,10 @@ const LoginCadastro = () => {
       className="d-flex justify-content-center align-items-center min-vh-100"
       style={{ backgroundColor: "#2a475e" }}
     >
-      <div className="card shadow p-4 rounded-4 bg-dark text-white" style={{ maxWidth: "400px", width: "100%" }}>
+      <div
+        className="card shadow p-4 rounded-4 bg-dark text-white"
+        style={{ maxWidth: "400px", width: "100%" }}
+      >
         <h3 className="text-center mb-4">
           {modoCadastro ? "Criar Conta" : "Entrar"}
         </h3>

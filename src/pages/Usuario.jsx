@@ -17,6 +17,43 @@ const Usuario = () => {
   const [nomeCartao, setNomeCartao] = useState('');
   const [validadeCartao, setValidadeCartao] = useState('');
 
+  const [cpf, setCpf] = useState('');
+
+  const validarCPF = (cpf) => {
+    cpf = cpf.replace(/[^\d]+/g, '');
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+  
+    let soma = 0;
+    for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
+    let resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+    if (resto !== parseInt(cpf.charAt(9))) return false;
+  
+    soma = 0;
+    for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
+    resto = (soma * 10) % 11;
+    if (resto === 10 || resto === 11) resto = 0;
+  
+    return resto === parseInt(cpf.charAt(10));
+  };
+  
+  const validarNumeroCartao = (numero) => {
+    const num = numero.replace(/\s+/g, '');
+    if (!/^\d{16}$/.test(num)) return false;
+  
+    // Algoritmo de Luhn
+    let soma = 0;
+    for (let i = 0; i < num.length; i++) {
+      let digito = parseInt(num.charAt(num.length - 1 - i));
+      if (i % 2 === 1) {
+        digito *= 2;
+        if (digito > 9) digito -= 9;
+      }
+      soma += digito;
+    }
+    return soma % 10 === 0;
+  };
+
   const renderCartaoVisual = () => (
     <div style={{ backgroundColor: '#999', padding: '20px', borderRadius: '10px', color: 'white', width: '300px', height: '180px', position: 'relative' }}>
       <div style={{ marginBottom: '20px', fontSize: '18px' }}>💳 Cartão</div>
@@ -47,10 +84,14 @@ const Usuario = () => {
               </div>
             ) : (
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setEditando(false);
-                }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!validarCPF(cpf)) {
+                  alert('CPF inválido');
+                  return;
+                }
+                setEditando(false);
+              }}
               >
                 <div className="mb-3">
                   <label className="form-label">Nome completo</label>
@@ -71,6 +112,17 @@ const Usuario = () => {
                     onChange={(e) => setDataNascimento(e.target.value)}
                   />
                 </div>
+                <div className="mb-3">
+  <label className="form-label">CPF</label>
+  <input
+    type="text"
+    className="form-control"
+    placeholder="000.000.000-00"
+    value={cpf}
+    onChange={(e) => setCpf(e.target.value)}
+  />
+</div>
+
                 <div className="mb-3">
                   <label className="form-label">Telefone</label>
                   <input
@@ -122,10 +174,14 @@ const Usuario = () => {
                   </div>
                 ) : (
                   <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      setEditandoCartao(false);
-                    }}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!validarNumeroCartao(numeroCartao)) {
+                      alert('Número do cartão inválido');
+                      return;
+                    }
+                    setEditandoCartao(false);
+                  }}
                   >
                     <div className="mb-3">
                       <label className="form-label">*Número do cartão</label>
