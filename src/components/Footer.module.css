@@ -1,0 +1,64 @@
+.footer {
+    width: 100%;
+    background-color: #212326;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+  }
+  
+  .centerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+  
+  .logo i {
+    font-size: 1.5rem;
+  }
+  
+  .logo span {
+    font-size: 1.2rem;
+  }
+  
+  .direitos {
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-bottom: 10px;
+  }
+  
+  .social {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social a {
+    color: white;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .social a:hover {
+    transform: scale(1.1);
+  }
+  .social a {
+    color: white;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  .social a:hover {
+    transform: scale(1.2);
+    color: #ffffff; /* Um lilás elegante */
+  }
+  
+  
+  
