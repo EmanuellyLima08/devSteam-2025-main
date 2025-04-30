@@ -51,8 +51,15 @@ const Header = (props) => {
                 className="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                 aria-labelledby="dropdownPerfil"
               >
+                {usuario.role === "ADMIN" && (
+                  <li>
+                    <Link to={"/cadastroJogos"} className="dropdown-item">
+                      Cadastro de Jogos
+                    </Link>
+                  </li>
+                )}
                 <li>
-                  <Link to={"/perfil"} className="dropdown-item">
+                  <Link to={"/usuario"} className="dropdown-item">
                     Perfil
                   </Link>
                 </li>

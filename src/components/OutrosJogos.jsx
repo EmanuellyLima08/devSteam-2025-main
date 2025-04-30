@@ -103,7 +103,7 @@ const OutrosJogos = () => {
       </h2>
       <div id="itensJogos" className="d-flex flex-column ms-md-5 ps-md-3 gap-4">
         {games.map((item) => (
-          <GameCard key={item.id} id={item.id} />
+          <GameCard key={item.id} {...item} />
         ))}
       </div>
     </div>
