@@ -52,7 +52,7 @@ const Header = (props) => {
                 aria-labelledby="dropdownPerfil"
               >
                 <li>
-                  <Link to={"/perfil"} className="dropdown-item">
+                  <Link to={"/usuario"} className="dropdown-item">
                     Perfil
                   </Link>
                 </li>
