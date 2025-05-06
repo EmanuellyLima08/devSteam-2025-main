@@ -133,7 +133,7 @@ const DashBoardAdm = () => {
             className="card shadow-lg p-3 text-center"
             style={{ backgroundColor: "#fff", borderRadius: "10px" }}
           >
-            <h6>🎮 Mais e Menos Vendidos</h6>
+            <h6>🎮 Jogos Mais e Menos Vendidos</h6>
             <div
               className="mx-auto my-2"
               style={{
