@@ -81,7 +81,14 @@ export default function MainRoutes() {
           </ProtectedRoute>
         }
       />
-
+      <Route 
+      path="/admin/gerenciarcupons"
+      element={
+        <ProtectedRoute role="ADMIN">
+          <Cupons />
+        </ProtectedRoute>
+      }
+/>
       {/* Rota protegida para usuário CLIENTE */}
       <Route
         path="/usuario"
