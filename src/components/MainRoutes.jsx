@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
 import App from "../App";
 import Login from "../pages/Login";
 import DashBoardAdm from "./DashBoardAdm";
@@ -12,71 +13,91 @@ import Usuario from "../pages/Usuario";
 
 export default function MainRoutes() {
   const { loading } = useAuth();
-
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
     const salvaUsuario = localStorage.getItem("devlogin");
-    salvaUsuario && setUsuario(JSON.parse(salvaUsuario));
+    if (salvaUsuario) {
+      setUsuario(JSON.parse(salvaUsuario));
+    }
   }, []);
 
   if (loading) return <p>Carregando...</p>;
 
+  const ProtectedRoute = ({ children, role }) => {
+    if (!usuario) {
+      return <Navigate to="/login" />;
+    }
+    if (role && usuario.role !== role) {
+      return <Navigate to="/" />;
+    }
+    return children;
+  };
+
   return (
     <Routes>
+      {/* Rota pública */}
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
 
-      {/* Somente ADMIN acessa */}
+      {/* Rotas protegidas para ADMIN */}
       <Route
         path="/admin"
         element={
-          usuario?.role === "ADMIN" ? (
+          <ProtectedRoute role="ADMIN">
             <DashBoardAdm />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-
-      <Route
-        path="/admin/categorias"
-        element={
-          usuario?.role === "ADMIN" ? <Categorias /> : <Navigate to="/login" />
-        }
-      />
-      <Route
-        path="/admin/cupons"
-        element={
-          usuario?.role === "ADMIN" ? <Cupons /> : <Navigate to="/login" />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/admin/categorias"
         element={
-          usuario?.role === "ADMIN" ? <Categorias /> : <Navigate to="/login" />
+          <ProtectedRoute role="ADMIN">
+            <Categorias />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/admin/cupons"
         element={
-          usuario?.role === "ADMIN" ? <Cupons /> : <Navigate to="/login" />
+          <ProtectedRoute role="ADMIN">
+            <Cupons />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/admin/jogos"
         element={
-          usuario?.role === "ADMIN" ? <Jogos /> : <Navigate to="/login" />
+          <ProtectedRoute role="ADMIN">
+            <Jogos />
+          </ProtectedRoute>
         }
       />
       <Route
         path="/admin/painel"
         element={
-          usuario?.role === "ADMIN" ? <AdminPainel /> : <Navigate to="/login" />
-          // <AdminPainel />
+          <ProtectedRoute role="ADMIN">
+            <AdminPainel />
+          </ProtectedRoute>
         }
       />
-      <Route path="/usuario" element={<Usuario />} />
+      <Route 
+      path="/admin/gerenciarcupons"
+      element={
+        <ProtectedRoute role="ADMIN">
+          <Cupons />
+        </ProtectedRoute>
+      }
+/>
+      {/* Rota protegida para usuário CLIENTE */}
+      <Route
+        path="/usuario"
+        element={
+          <ProtectedRoute role="CLIENTE">
+            <Usuario />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
