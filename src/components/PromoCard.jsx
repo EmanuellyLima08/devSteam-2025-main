@@ -6,7 +6,6 @@ const PromoCard = (props) => {
   const precoComDesconto = props.preco - (props.preco * props.desconto) / 100;
   const toggleModal = () => setShowModal(!showModal);
 
-  // Dados fictícios caso não sejam passados como props
   const genero = props.genero || "Ação / Mundo Aberto";
   const classificacao = props.classificacao || "16+";
   const descricao =
@@ -59,7 +58,7 @@ const PromoCard = (props) => {
             id="addCarrinho"
             className="btn btn-success desconto text-light w-100 border-0"
             onClick={(e) => {
-              e.stopPropagation(); // Evita abrir modal ao clicar no botão
+              e.stopPropagation();
               props.onAddCarrinho();
             }}
           >
@@ -69,7 +68,7 @@ const PromoCard = (props) => {
         </div>
       </div>
 
-      {/* Modal de detalhes */}
+      {/* Modal */}
       {showModal && (
         <div
           className="modal fade show"
@@ -93,20 +92,27 @@ const PromoCard = (props) => {
                 ></button>
               </div>
               <div className="modal-body">
-                <img
-                  src={props.imagem}
-                  alt={props.titulo}
-                  className="img-fluid mb-3 rounded"
-                />
-                <p><strong>Gênero:</strong> {genero}</p>
-                <p><strong>Classificação:</strong> {classificacao}</p>
-                <p><strong>Descrição:</strong> {descricao}</p>
-                <p><strong>Requisitos mínimos:</strong></p>
-                <ul>
-                  {requisitos.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
-                </ul>
+                <div className="row g-4">
+                  <div className="col-md-4 text-center">
+                    <img
+                      src={props.imagem}
+                      alt={props.titulo}
+                      className="img-fluid rounded"
+                      style={{ maxHeight: "300px", objectFit: "cover" }}
+                    />
+                  </div>
+                  <div className="col-md-8">
+                    <p><strong>Gênero:</strong> {genero}</p>
+                    <p><strong>Classificação:</strong> {classificacao}</p>
+                    <p><strong>Descrição:</strong> {descricao}</p>
+                    <p><strong>Requisitos mínimos:</strong></p>
+                    <ul>
+                      {requisitos.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div className="modal-footer">
                 <button
@@ -118,10 +124,7 @@ const PromoCard = (props) => {
                 >
                   <i className="bi bi-cart-plus me-2"></i> Adicionar ao carrinho
                 </button>
-                <button
-                  className="btn btn-secondary"
-                  onClick={toggleModal}
-                >
+                <button className="btn btn-secondary" onClick={toggleModal}>
                   Fechar
                 </button>
               </div>
