@@ -1,108 +1,132 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FaRunning, FaDragon, FaPuzzlePiece, FaShieldAlt, FaCar, FaFutbol, FaCogs, FaSkullCrossbones } from "react-icons/fa";
 
 const Categorias = () => {
   const [categories, setCategories] = useState([
-    { id: 1, name: "Aventura", image: "https://via.placeholder.com/300x200?text=Aventura" },
-    { id: 2, name: "Terror", image: "https://via.placeholder.com/300x200?text=Terror" },
-    { id: 3, name: "RPG", image: "https://via.placeholder.com/300x200?text=RPG" },
-    { id: 4, name: "Estratégia", image: "https://via.placeholder.com/300x200?text=Estratégia" },
-    { id: 5, name: "Corrida", image: "https://via.placeholder.com/300x200?text=Corrida" },
-    { id: 6, name: "Esportes", image: "https://via.placeholder.com/300x200?text=Esportes" },
-    { id: 7, name: "Simulação", image: "https://via.placeholder.com/300x200?text=Simulação" },
-    { id: 8, name: "Puzzle", image: "https://via.placeholder.com/300x200?text=Puzzle" },
+    { id: 1, name: "Aventura", icon: <FaRunning /> },
+    { id: 2, name: "Terror", icon: <FaSkullCrossbones /> },
+    { id: 3, name: "RPG", icon: <FaDragon /> },
+    { id: 4, name: "Estratégia", icon: <FaShieldAlt /> },
+    { id: 5, name: "Corrida", icon: <FaCar /> },
+    { id: 6, name: "Esportes", icon: <FaFutbol /> },
+    { id: 7, name: "Simulação", icon: <FaCogs /> },
+    { id: 8, name: "Puzzle", icon: <FaPuzzlePiece /> },
   ]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [newCategory, setNewCategory] = useState("");
-  const [isCreating, setIsCreating] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [modalAction, setModalAction] = useState(""); // Controlar se é editar ou criar ou excluir
 
   const handleAddCategory = () => {
-    if (newCategory.trim()) {
-      const newId = categories.length + 1;
-      setCategories([...categories, {
-        id: newId,
-        name: newCategory,
-        image: "https://via.placeholder.com/300x200?text=Nova+Categoria"
-      }]);
-      setNewCategory("");
-      setIsCreating(false);
+    if (newCategoryName.trim()) {
+      const newCategory = {
+        id: categories.length + 1,
+        name: newCategoryName,
+        icon: <FaPuzzlePiece />,
+      };
+      setCategories([...categories, newCategory]);
+      setNewCategoryName("");
       setShowModal(false);
     }
   };
 
-  const handleEditCategory = (updatedName) => {
-    if (selectedCategory) {
+  const handleEditCategory = () => {
+    if (selectedCategory && newCategoryName.trim()) {
       const updatedCategories = categories.map((category) =>
         category.id === selectedCategory.id
-          ? { ...category, name: updatedName }
+          ? { ...category, name: newCategoryName }
           : category
       );
       setCategories(updatedCategories);
-      setSelectedCategory(null);
       setShowModal(false);
+      setSelectedCategory(null);
+      setNewCategoryName("");
     }
   };
 
   const handleRemoveCategory = () => {
-    if (selectedCategory) {
-      const updatedCategories = categories.filter(
-        (category) => category.id !== selectedCategory.id
-      );
-      setCategories(updatedCategories);
-      setSelectedCategory(null);
-      setShowModal(false);
-    }
-  };
-
-  const openCreateModal = () => {
-    setIsCreating(true);
-    setShowModal(true);
+    const updatedCategories = categories.filter(
+      (category) => category.id !== selectedCategory.id
+    );
+    setCategories(updatedCategories);
+    setShowModal(false);
+    setSelectedCategory(null);
+    setNewCategoryName("");
   };
 
   const openEditModal = (category) => {
     setSelectedCategory(category);
-    setIsCreating(false);
+    setNewCategoryName(category.name);
+    setModalAction("edit"); // Define que a ação é de editar
+    setShowModal(true);
+  };
+
+  const openCreateModal = () => {
+    setSelectedCategory(null);
+    setNewCategoryName("");
+    setModalAction("create"); // Define que a ação é de criar
+    setShowModal(true);
+  };
+
+  const openRemoveModal = (category) => {
+    setSelectedCategory(category);
+    setModalAction("remove"); // Define que a ação é de excluir
     setShowModal(true);
   };
 
   const closeModal = () => {
-    setIsCreating(false);
-    setSelectedCategory(null);
     setShowModal(false);
+    setSelectedCategory(null);
+    setNewCategoryName("");
+    setModalAction(""); // Resetar a ação do modal
   };
 
   return (
-    <div className="container">
-      <h1 className="my-4">Gerenciar Categorias</h1>
-      <div className="row">
-        <div className="col-md-4 mb-4">
-          <div
-            className="card h-100 d-flex justify-content-center align-items-center"
-            style={{ cursor: "pointer", height: "200px" }}
-            onClick={openCreateModal}
-          >
-            <div className="card-body text-center">
-              <h5 className="card-title">+ Nova Categoria</h5>
-            </div>
+    <div className="container mt-5">
+      <h1 className="mb-4">Gerenciar Categorias</h1>
+
+      {/* Botão Nova Categoria */}
+      <div
+        className="mb-4"
+        onClick={openCreateModal} // Abre o modal para criar nova categoria
+        style={{ cursor: "pointer" }}
+      >
+        <div className="card text-center">
+          <div className="card-body">
+            <h5>+ Nova Categoria</h5>
           </div>
         </div>
+      </div>
 
+      {/* Lista de Categorias */}
+      <div className="row">
         {categories.map((category) => (
-          <div key={category.id} className="col-md-4 mb-4">
-            <div
-              className="card h-100"
-              style={{ cursor: "pointer", height: "200px" }}
-              onClick={() => openEditModal(category)}
-            >
-              <img
-                src={category.image}
-                className="card-img-top"
-                alt={category.name}
-                style={{ height: "120px", objectFit: "cover" }}
-              />
-              <div className="card-body text-center">
-                <h5 className="card-title">{category.name}</h5>
+          <div key={category.id} className="col-md-3 mb-4">
+            <div className="card p-2 d-flex align-items-center" style={{ width: "auto" }}>
+              <div className="d-flex align-items-center">
+                {/* Ícone da Categoria */}
+                <div className="me-2" style={{ fontSize: "1.5rem" }}>
+                  {category.icon}
+                </div>
+                <div>
+                  <h5 className="card-title m-0">{category.name}</h5>
+                </div>
+              </div>
+              <div className="mt-2">
+                <button
+                  className="btn btn-primary btn-sm me-2"
+                  onClick={() => openEditModal(category)}
+                >
+                  Editar
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => openRemoveModal(category)}
+                >
+                  Apagar
+                </button>
               </div>
             </div>
           </div>
@@ -111,101 +135,100 @@ const Categorias = () => {
 
       {/* Modal */}
       {showModal && (
-        <>
-          <div
-            className="modal-backdrop fade show"
-            style={{
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              zIndex: 1040,
-            }}
-          ></div>
-
-          <div
-            className="modal fade show"
-            tabIndex="-1"
-            style={{
-              display: "block",
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              zIndex: 1050,
-              backgroundColor: "#fff",
-              borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-              width: "400px",
-              height: "400px",
-              padding: "20px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between"
-            }}
-          >
-            {/* Título */}
-            <div className="modal-header">
-              <h5 className="modal-title">
-                {isCreating ? "Criar Nova Categoria" : "Editar Categoria"}
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={closeModal}
-              ></button>
-            </div>
-
-            {/* Input */}
-            <div className="modal-body d-flex align-items-center">
-              <input
-                type="text"
-                className="form-control"
-                placeholder={isCreating ? "Nome da Categoria" : "Novo Nome da Categoria"}
-                value={isCreating ? newCategory : selectedCategory?.name || ""}
-                onChange={(e) =>
-                  isCreating
-                    ? setNewCategory(e.target.value)
-                    : setSelectedCategory({ ...selectedCategory, name: e.target.value })
-                }
-              />
-            </div>
-
-            {/* Botões */}
-            <div className="modal-footer d-flex justify-content-between">
-              {isCreating ? (
-                <>
-                  <button onClick={handleAddCategory} className="btn btn-primary">
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          style={{
+            display: "block",
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1050,
+          }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  {modalAction === "edit" && "Editar Categoria"}
+                  {modalAction === "create" && "Criar Nova Categoria"}
+                  {modalAction === "remove" && "Excluir Categoria"}
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={closeModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {modalAction === "edit" && (
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    placeholder="Nome da Categoria"
+                  />
+                )}
+                {modalAction === "create" && (
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    placeholder="Nome da Categoria"
+                  />
+                )}
+                {modalAction === "remove" && (
+                  <p>Tem certeza que deseja apagar essa categoria?</p>
+                )}
+              </div>
+              <div className="modal-footer">
+                {modalAction === "edit" && (
+                  <>
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleEditCategory}
+                    >
+                      Salvar Alterações
+                    </button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={closeModal}
+                    >
+                      Cancelar
+                    </button>
+                  </>
+                )}
+                {modalAction === "create" && (
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleAddCategory}
+                  >
                     Criar Categoria
                   </button>
-                  <button onClick={closeModal} className="btn btn-secondary">
-                    Cancelar
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => handleEditCategory(selectedCategory.name)}
-                    className="btn btn-primary"
-                  >
-                    Salvar Alterações
-                  </button>
-                  <button
-                    onClick={handleRemoveCategory}
-                    className="btn btn-danger"
-                  >
-                    Excluir Categoria
-                  </button>
-                  <button onClick={closeModal} className="btn btn-secondary">
-                    Cancelar
-                  </button>
-                </>
-              )}
+                )}
+                {modalAction === "remove" && (
+                  <>
+                    <button
+                      className="btn btn-danger"
+                      onClick={handleRemoveCategory}
+                    >
+                      Excluir
+                    </button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={closeModal}
+                    >
+                      Cancelar
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
