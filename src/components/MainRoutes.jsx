@@ -1,14 +1,24 @@
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-import Login from "../pages/Login";
-import Usuario from "../pages/Usuario";
-import Checkout from "../pages/checkout";
-import CadastroJogos from "../pages/CadastroJogos";
 import App from "../App";
+import Login from "../pages/Login";
+import DashBoardAdm from "./DashBoardAdm";
+import Categorias from "../pages/Categorias";
+import Cupons from "../pages/Cupons";
+import Jogos from "../pages/Jogos";
+import AdminPainel from "./AdminPainel";
+import Usuario from "../pages/Usuario";
 
 export default function MainRoutes() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
+
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    const salvaUsuario = localStorage.getItem("devlogin");
+    salvaUsuario && setUsuario(JSON.parse(salvaUsuario));
+  }, []);
 
   if (loading) return <p>Carregando...</p>;
 
@@ -17,11 +27,12 @@ export default function MainRoutes() {
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
 
+      {/* Somente ADMIN acessa */}
       <Route
-        path="/usuario"
+        path="/admin"
         element={
-          user?.role === "CLIENTE" || user?.role === "ADMIN" ? (
-            <Usuario />
+          usuario?.role === "ADMIN" ? (
+            <DashBoardAdm />
           ) : (
             <Navigate to="/login" />
           )
@@ -29,26 +40,43 @@ export default function MainRoutes() {
       />
 
       <Route
-        path="/carrinho"
+        path="/admin/categorias"
         element={
-          user?.role === "CLIENTE" || user?.role === "ADMIN" ? (
-            <Checkout />
-          ) : (
-            <Navigate to="/login" />
-          )
+          usuario?.role === "ADMIN" ? <Categorias /> : <Navigate to="/login" />
         }
       />
-
       <Route
-        path="/cadastroJogos"
+        path="/admin/cupons"
         element={
-          user?.role === "ADMIN" ? (
-            <CadastroJogos />
-          ) : (
-            <Navigate to="/login" />
-          )
+          usuario?.role === "ADMIN" ? <Cupons /> : <Navigate to="/login" />
         }
       />
+      <Route
+        path="/admin/categorias"
+        element={
+          usuario?.role === "ADMIN" ? <Categorias /> : <Navigate to="/login" />
+        }
+      />
+      <Route
+        path="/admin/cupons"
+        element={
+          usuario?.role === "ADMIN" ? <Cupons /> : <Navigate to="/login" />
+        }
+      />
+      <Route
+        path="/admin/jogos"
+        element={
+          usuario?.role === "ADMIN" ? <Jogos /> : <Navigate to="/login" />
+        }
+      />
+      <Route
+        path="/admin/painel"
+        element={
+          usuario?.role === "ADMIN" ? <AdminPainel /> : <Navigate to="/login" />
+          // <AdminPainel />
+        }
+      />
+      <Route path="/usuario" element={<Usuario />} />
     </Routes>
   );
 }
