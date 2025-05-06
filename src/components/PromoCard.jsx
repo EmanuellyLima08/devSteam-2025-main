@@ -2,118 +2,71 @@ import React, { useState } from "react";
 
 const PromoCard = (props) => {
   const [showModal, setShowModal] = useState(false);
+
   const precoComDesconto = props.preco - (props.preco * props.desconto) / 100;
 
   const formatarMoeda = (valor) =>
-    valor.toLocaleString("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
+    valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   const toggleModal = () => setShowModal(!showModal);
 
   return (
     <>
+      {/* CARD NORMAL (3 CARDS POR LINHA, ESTILO ANTERIOR) */}
       <div
-        className="card text-light border-0"
+        id="PromoCard"
+        className="promoCard card border-0 overflow-hidden"
         onClick={toggleModal}
-        style={{
-          backgroundColor: "#000",
-          maxWidth: "300px",
-          borderRadius: "16px",
-          overflow: "hidden",
-          cursor: "pointer",
-        }}
+        style={{ cursor: "pointer", width: "100%", maxWidth: "320px" }}
       >
-        {/* Imagem */}
         <img
+          className="card-img-top object-fit-cover"
           src={props.imagem}
+          height={300}
           alt={props.titulo}
-          style={{
-            width: "100%",
-            height: "300px",
-            objectFit: "cover",
-          }}
         />
-
-        {/* Parte inferior azul */}
-        <div
-          className="p-3 d-flex flex-column align-items-center text-center"
-          style={{ backgroundColor: "#2A89AD" }} // fundo azul
-        >
-          <h4
-            className="fw-bold text-uppercase"
-            style={{ fontSize: "1.4rem", color: "white", marginBottom: "10px" }}
+        <div className="card-body d-flex flex-column gap-2">
+          <h5
+            className="card-title text-uppercase text-truncate fw-bold text-light"
           >
             {props.titulo}
-          </h4>
-
-          <p className="text-uppercase text-white fw-bold mb-2">
-            OFERTA EXCLUSIVA
-          </p>
-
-          {/* Preços e desconto */}
-          <div className="d-flex justify-content-between w-100 align-items-center mb-3">
+          </h5>
+          <div className="d-flex justify-content-between align-items-center">
+            {/* Modificação para o quadrado em volta da porcentagem e a cor verde */}
             <span
+              className="desconto text-light fw-bold p-1 rounded"
               style={{
                 backgroundColor: "black",
-                color: "#4C7212", // ✅ cor VERDE aplicada aqui
-                padding: "6px 14px",
-                fontWeight: "bold",
+                color: "green",
                 fontSize: "1.2rem",
-                borderRadius: "4px",
               }}
             >
               -{props.desconto}%
             </span>
-
             <div className="text-end">
-              <p
-                style={{
-                  color: "#ddd",
-                  textDecoration: "line-through",
-                  fontSize: "0.9rem",
-                  margin: 0,
-                }}
-              >
+              <p className="text-secondary text-decoration-line-through small m-0">
                 {formatarMoeda(props.preco)}
               </p>
-              <p
-                style={{
-                  color: "#4C7212", // verde escuro aplicado
-                  fontSize: "1.2rem",
-                  fontWeight: "bold",
-                  margin: 0,
-                }}
-              >
+              <p className="corValor text-success fw-bold fs-5 m-0">
                 {formatarMoeda(precoComDesconto)}
               </p>
             </div>
           </div>
-
-          {/* Botão */}
           <button
-            className="w-100"
+            id="addCarrinho"
+            className="btn btn-success desconto text-light w-100 border-0"
             onClick={(e) => {
               e.stopPropagation();
               props.onAddCarrinho();
             }}
-            style={{
-              backgroundColor: "#4C7212", // verde escuro aplicado
-              color: "white",
-              border: "none",
-              padding: "12px 0",
-              borderRadius: "12px",
-              fontWeight: "bold",
-              fontSize: "1rem",
-            }}
           >
-            ADICIONAR AO CARRINHO
+            <i className="bi bi-cart-plus me-2"></i>
+            Adicionar ao carrinho
           </button>
         </div>
       </div>
 
-      {/* Modal */}
+      {/* MODAL AO CLICAR */}
       {showModal && (
         <div
           className="modal fade show"
@@ -143,46 +96,22 @@ const PromoCard = (props) => {
                       src={props.imagem}
                       alt={props.titulo}
                       className="img-fluid rounded"
-                      style={{
-                        maxHeight: "300px",
-                        objectFit: "cover",
-                      }}
+                      style={{ maxHeight: "300px", objectFit: "cover" }}
                     />
                   </div>
                   <div className="col-md-8">
-                    <p>
-                      <strong>Categoria:</strong>{" "}
-                      {props.categoria || "Ação / Mundo Aberto"}
-                    </p>
-                    <p>
-                      <strong>Descrição:</strong>{" "}
-                      {props.descricao ||
-                        "Mergulhe em uma aventura épica com gráficos impressionantes e jogabilidade envolvente. Cada missão traz novas emoções, com um mundo aberto para explorar ao seu ritmo."}
-                    </p>
-                    <p>
-                      <strong>Preço original:</strong>{" "}
-                      {formatarMoeda(props.preco)}
-                    </p>
-                    <p>
-                      <strong>Desconto:</strong> {props.desconto}%
-                    </p>
-                    <p>
-                      <strong>Preço com desconto:</strong>{" "}
-                      <span style={{ color: "#4C7212" }}>
-                        {formatarMoeda(precoComDesconto)}
-                      </span>
-                    </p>
+                    <p><strong>Categoria:</strong> {props.categoria || "Ação / Mundo Aberto"}</p>
+                    {/* Descrição personalizada */}
+                    <p><strong>Descrição:</strong> {props.descricao || "Mergulhe em uma aventura épica com gráficos impressionantes e jogabilidade envolvente. Cada missão traz novas emoções, com um mundo aberto para explorar ao seu ritmo."}</p>
+                    <p><strong>Preço original:</strong> {formatarMoeda(props.preco)}</p>
+                    <p><strong>Desconto:</strong> {props.desconto}%</p>
+                    <p><strong>Preço com desconto:</strong> {formatarMoeda(precoComDesconto)}</p>
                   </div>
                 </div>
               </div>
               <div className="modal-footer">
                 <button
-                  className="btn"
-                  style={{
-                    backgroundColor: "#4C7212",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
+                  className="btn btn-success"
                   onClick={() => {
                     props.onAddCarrinho();
                     toggleModal();
