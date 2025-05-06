@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom"; // Corrigi a importação de useNavigate
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useAuth } from "../context/AuthContext"; // novo hook
+import { useAuth } from "../context/AuthContext"; // Novo hook
 
 const LoginCadastro = () => {
   const [modoCadastro, setModoCadastro] = useState(false);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [souAdmin, setSouAdmin] = useState(false); // <- Novo estado para definir o role
+  const [souAdmin, setSouAdmin] = useState(false); // Novo estado para definir o role
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuth(); // UseAuth para manipular o login
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ const LoginCadastro = () => {
           nome,
           email,
           senha,
-          role: souAdmin ? "ADMIN" : "CLIENTE", // <- Define o papel com base na escolha
+          role: souAdmin ? "ADMIN" : "CLIENTE", // Define o papel com base na escolha
         };
         try {
           localStorage.setItem("devlogin", JSON.stringify(novoUsuario));
@@ -46,14 +46,10 @@ const LoginCadastro = () => {
           usuarioSalvo.email === email &&
           usuarioSalvo.senha === senha
         ) {
-          await login(usuarioSalvo);
-
-          // Redirecionamento baseado na role
-          if (usuarioSalvo.role === "ADMIN") {
-            navigate("/admin");
-          } else {
-            navigate("/usuario");
-          }
+          await login(usuarioSalvo); // Salva o usuário no contexto de autenticação
+  
+          // Redireciona para a página inicial, independentemente do papel
+          navigate("/");
         } else {
           alert("E-mail ou senha incorretos!");
         }
@@ -63,7 +59,6 @@ const LoginCadastro = () => {
       }
     }
   };
-
   return (
     <div
       className="d-flex justify-content-center align-items-center min-vh-100"
