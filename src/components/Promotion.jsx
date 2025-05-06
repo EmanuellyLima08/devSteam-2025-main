@@ -101,6 +101,19 @@ const Promotion = (props) => {
   );
 
   useEffect(() => {
+    const gamesSalvos = localStorage.getItem("devgames");
+    if (!gamesSalvos) {
+      const jogosConvertidos = games.map((jogo) => ({
+        id: jogo.id,
+        name: jogo.titulo,
+        image: jogo.imagem,
+      }));
+      localStorage.setItem("devgames", JSON.stringify(jogosConvertidos));
+    }
+  }, [games]);
+  
+
+  useEffect(() => {
     const aleatorioJogos = games
       .filter((jogo) => jogo.desconto > 0)
       //.sort((a, b) => b.desconto - a.desconto) //ordenação por desconto decrescente
