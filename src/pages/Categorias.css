@@ -1,21 +1,33 @@
-.category-card {
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.category-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.create-card {
-  border: 2px dashed #007bff;
-  background-color: #f8f9fa;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.create-card:hover {
-  background-color: #e9ecef;
-  transform: scale(1.05);
-}
+/* Estilo do modal */
+.categoria-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    height: 500px;
+    padding: 20px;
+  }
+  
+  /* Estilo dos botões no modal */
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Espaço entre os botões */
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .modal-footer .btn {
+    flex: 1; /* Todos os botões terão o mesmo tamanho */
+    text-align: center;
+  }
+  

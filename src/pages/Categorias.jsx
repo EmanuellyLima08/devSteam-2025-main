@@ -1,212 +1,132 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from "react";
+import { Card, Button, Modal, Form } from "react-bootstrap";
+
+const categoriaImagens = {
+  "Aventura": "https://via.placeholder.com/300x200?text=Aventura",
+  "Terror": "https://via.placeholder.com/300x200?text=Terror",
+  "RPG": "https://via.placeholder.com/300x200?text=RPG",
+  "Estratégia": "https://via.placeholder.com/300x200?text=Estratégia",
+  "Corrida": "https://via.placeholder.com/300x200?text=Corrida",
+  "Esportes": "https://via.placeholder.com/300x200?text=Esportes",
+  "Simulação": "https://via.placeholder.com/300x200?text=Simulação",
+  "Puzzle": "https://via.placeholder.com/300x200?text=Puzzle",
+};
 
 const Categorias = () => {
-  const [categories, setCategories] = useState([
-    { id: 1, name: "Aventura", image: "https://via.placeholder.com/300x200?text=Aventura" },
-    { id: 2, name: "Terror", image: "https://via.placeholder.com/300x200?text=Terror" },
-    { id: 3, name: "RPG", image: "https://via.placeholder.com/300x200?text=RPG" },
-    { id: 4, name: "Estratégia", image: "https://via.placeholder.com/300x200?text=Estratégia" },
-    { id: 5, name: "Corrida", image: "https://via.placeholder.com/300x200?text=Corrida" },
-    { id: 6, name: "Esportes", image: "https://via.placeholder.com/300x200?text=Esportes" },
-    { id: 7, name: "Simulação", image: "https://via.placeholder.com/300x200?text=Simulação" },
-    { id: 8, name: "Puzzle", image: "https://via.placeholder.com/300x200?text=Puzzle" },
-  ]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [newCategory, setNewCategory] = useState("");
-  const [isCreating, setIsCreating] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState("add"); 
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categoryForm, setCategoryForm] = useState({ id: null, name: "", image: "" });
 
-  const handleAddCategory = () => {
-    if (newCategory.trim()) {
-      const newId = categories.length + 1;
-      setCategories([...categories, {
-        id: newId,
-        name: newCategory,
-        image: "https://via.placeholder.com/300x200?text=Nova+Categoria"
-      }]);
-      setNewCategory("");
-      setIsCreating(false);
-      setShowModal(false);
+  useEffect(() => {
+    const categoriasSalvas = localStorage.getItem("devcategories");
+    if (categoriasSalvas) {
+      setCategories(JSON.parse(categoriasSalvas));
     }
+  }, []);
+
+  const salvarNoStorage = (dados) => {
+    localStorage.setItem("devcategories", JSON.stringify(dados));
   };
 
-  const handleEditCategory = (updatedName) => {
-    if (selectedCategory) {
-      const updatedCategories = categories.map((category) =>
-        category.id === selectedCategory.id
-          ? { ...category, name: updatedName }
-          : category
-      );
-      setCategories(updatedCategories);
-      setSelectedCategory(null);
-      setShowModal(false);
-    }
-  };
-
-  const handleRemoveCategory = () => {
-    if (selectedCategory) {
-      const updatedCategories = categories.filter(
-        (category) => category.id !== selectedCategory.id
-      );
-      setCategories(updatedCategories);
-      setSelectedCategory(null);
-      setShowModal(false);
-    }
-  };
-
-  const openCreateModal = () => {
-    setIsCreating(true);
-    setShowModal(true);
-  };
-
-  const openEditModal = (category) => {
+  const handleShowModal = (mode, category = null) => {
+    setModalMode(mode);
     setSelectedCategory(category);
-    setIsCreating(false);
+    setCategoryForm(
+      category || {
+        id: Date.now(),
+        name: "",
+        image: categoriaImagens["Aventura"] 
+      }
+    );
     setShowModal(true);
   };
 
-  const closeModal = () => {
-    setIsCreating(false);
-    setSelectedCategory(null);
+  const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  return (
-    <div className="container">
-      <h1 className="my-4">Gerenciar Categorias</h1>
-      <div className="row">
-        <div className="col-md-4 mb-4">
-          <div
-            className="card h-100 d-flex justify-content-center align-items-center"
-            style={{ cursor: "pointer", height: "200px" }}
-            onClick={openCreateModal}
-          >
-            <div className="card-body text-center">
-              <h5 className="card-title">+ Nova Categoria</h5>
-            </div>
-          </div>
-        </div>
+  const handleSubmit = () => {
+    if (modalMode === "add") {
+      categoryForm.image = categoriaImagens[categoryForm.name] || "https://via.placeholder.com/300x200?text=Nova+Categoria";
+      const atualizadas = [...categories, categoryForm];
+      setCategories(atualizadas);
+      salvarNoStorage(atualizadas);
+    } else if (modalMode === "edit") {
+      categoryForm.image = categoriaImagens[categoryForm.name] || selectedCategory.image;
+      const atualizadas = categories.map((c) =>
+        c.id === selectedCategory.id ? categoryForm : c
+      );
+      setCategories(atualizadas);
+      salvarNoStorage(atualizadas);
+    }
+    handleCloseModal();
+  };
 
+  return (
+    <div className="container mt-4">
+      <h2>Gerenciar Categorias</h2>
+
+      <Card className="mb-4" onClick={() => handleShowModal("add")} style={{ cursor: "pointer" }}>
+        <Card.Body className="text-center">
+          <h5>+ Nova Categoria</h5>
+        </Card.Body>
+      </Card>
+
+      <div className="row">
         {categories.map((category) => (
-          <div key={category.id} className="col-md-4 mb-4">
-            <div
-              className="card h-100"
-              style={{ cursor: "pointer", height: "200px" }}
-              onClick={() => openEditModal(category)}
-            >
-              <img
+          <div className="col-md-4 mb-4" key={category.id}>
+            <Card>
+              <Card.Img
+                variant="top"
                 src={category.image}
-                className="card-img-top"
                 alt={category.name}
-                style={{ height: "120px", objectFit: "cover" }}
+                style={{ maxHeight: "200px", objectFit: "cover" }}
               />
-              <div className="card-body text-center">
-                <h5 className="card-title">{category.name}</h5>
-              </div>
-            </div>
+              <Card.Body>
+                <Card.Title>{category.name}</Card.Title>
+                <Button
+                  variant="warning"
+                  className="me-2"
+                  onClick={() => handleShowModal("edit", category)}
+                >
+                  Editar
+                </Button>
+                <Button variant="danger" onClick={() => setShowModal(true)}>
+                  Excluir
+                </Button>
+              </Card.Body>
+            </Card>
           </div>
         ))}
       </div>
 
-      {/* Modal */}
-      {showModal && (
-        <>
-          <div
-            className="modal-backdrop fade show"
-            style={{
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              zIndex: 1040,
-            }}
-          ></div>
-
-          <div
-            className="modal fade show"
-            tabIndex="-1"
-            style={{
-              display: "block",
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              zIndex: 1050,
-              backgroundColor: "#fff",
-              borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-              width: "400px",
-              height: "400px",
-              padding: "20px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between"
-            }}
-          >
-            {/* Título */}
-            <div className="modal-header">
-              <h5 className="modal-title">
-                {isCreating ? "Criar Nova Categoria" : "Editar Categoria"}
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={closeModal}
-              ></button>
-            </div>
-
-            {/* Input */}
-            <div className="modal-body d-flex align-items-center">
-              <input
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{modalMode === "add" ? "Adicionar Categoria" : "Editar Categoria"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="categoryName">
+              <Form.Label>Nome da categoria</Form.Label>
+              <Form.Control
                 type="text"
-                className="form-control"
-                placeholder={isCreating ? "Nome da Categoria" : "Novo Nome da Categoria"}
-                value={isCreating ? newCategory : selectedCategory?.name || ""}
-                onChange={(e) =>
-                  isCreating
-                    ? setNewCategory(e.target.value)
-                    : setSelectedCategory({ ...selectedCategory, name: e.target.value })
-                }
+                value={categoryForm.name}
+                onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
               />
-            </div>
-
-            {/* Botões */}
-            <div className="modal-footer d-flex justify-content-between">
-              {isCreating ? (
-                <>
-                  <button onClick={handleAddCategory} className="btn btn-primary">
-                    Criar Categoria
-                  </button>
-                  <button onClick={closeModal} className="btn btn-secondary">
-                    Cancelar
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => handleEditCategory(selectedCategory.name)}
-                    className="btn btn-primary"
-                  >
-                    Salvar Alterações
-                  </button>
-                  <button
-                    onClick={handleRemoveCategory}
-                    className="btn btn-danger"
-                  >
-                    Excluir Categoria
-                  </button>
-                  <button onClick={closeModal} className="btn btn-secondary">
-                    Cancelar
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </>
-      )}
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            {modalMode === "add" ? "Adicionar" : "Salvar Alterações"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
