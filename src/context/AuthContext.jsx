@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
       // Login local (offline)
       const usuarioSalvo = JSON.parse(localStorage.getItem("devlogin"));
       if (usuarioSalvo) {
-        setUser({ ...usuarioSalvo, role: "CLIENTE" }); // Define a role como CLIENTE por padrão
+        setUser(usuarioSalvo); // mantém o role salvo no objeto original
       }
       setLoading(false);
     } else if (token) {
@@ -40,7 +40,7 @@ export function AuthProvider({ children }) {
       // Login local
       localStorage.setItem("token", "fake-token");
       localStorage.setItem("devlogin", JSON.stringify(emailOuUsuario));
-      setUser({ ...emailOuUsuario, role: "CLIENTE" });
+      setUser(emailOuUsuario); // mantém o role do objeto passado
       return;
     }
 
