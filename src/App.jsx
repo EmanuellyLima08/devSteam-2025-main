@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-
 import "./App.css";
-
 import Header from "./components/Header";
 import Promotion from "./components/Promotion";
 import CarrinhoOffCanvas from "./components/CarrinhoOffCanvas";
 import OutrosJogos from "./components/OutrosJogos";
+import Footer from "./components/footer";
 
 function App() {
   const [carrinhoItem, setCarrinhoItem] = useState([]);
@@ -19,8 +18,6 @@ function App() {
     salvaCarrinho && setCarrinhoItem(JSON.parse(salvaCarrinho));
   }, []);
 
-  // console.log(localStorage.getItem("devcarrinho"));
-
   const handleAddCarrinho = (produto) => {
     setCarrinhoItem((itemAnterior) => {
       const existe = itemAnterior.find((item) => item.id === produto.id);
@@ -30,42 +27,19 @@ function App() {
             ? { ...item, quantidade: item.quantidade + 1 }
             : item
         );
-      } else {
-        return [...itemAnterior, { ...produto, quantidade: 1 }];
       }
+      return [...itemAnterior, { ...produto, quantidade: 1 }];
     });
   };
 
-  const handleRemoveCarrinho = (produto) => {
-    setCarrinhoItem((itemAnterior) =>
-      itemAnterior.filter((item) => item.id !== produto.id)
-    );
-  };
-
-  const handleUpdateCarrinho = (produto, novaQuantidade) => {
-    setCarrinhoItem((itemAnterior) =>
-      itemAnterior.map((item) =>
-        item.id === produto.id
-          ? { ...item, quantidade: novaQuantidade > 0 ? novaQuantidade : 1 }
-          : item
-      )
-    );
-  };
-
   return (
-    <>
-      <Header contadorJogos={carrinhoItem.length} />
-      <Promotion
-        onAddCarrinho={handleAddCarrinho} //adicionando o click para promoção
-      />
-
-      <CarrinhoOffCanvas
-        onRemoveCarrinho={handleRemoveCarrinho}
-        onUpdateCarrinho={handleUpdateCarrinho}
-        carrinhoItem={carrinhoItem}
-      />
-      <OutrosJogos />
-    </>
+    <div className="App">
+      <Header />
+      <Promotion onAddCarrinho={handleAddCarrinho} />
+      <CarrinhoOffCanvas carrinhoItem={carrinhoItem} />
+      <OutrosJogos onAddCarrinho={handleAddCarrinho} />
+      <Footer />
+    </div>
   );
 }
 
