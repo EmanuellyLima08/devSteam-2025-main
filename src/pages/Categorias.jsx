@@ -1,50 +1,86 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, Modal, Form } from "react-bootstrap";
-
-const categoriaImagens = {
-  "Aventura": "https://via.placeholder.com/300x200?text=Aventura",
-  "Terror": "https://via.placeholder.com/300x200?text=Terror",
-  "RPG": "https://via.placeholder.com/300x200?text=RPG",
-  "Estratégia": "https://via.placeholder.com/300x200?text=Estratégia",
-  "Corrida": "https://via.placeholder.com/300x200?text=Corrida",
-  "Esportes": "https://via.placeholder.com/300x200?text=Esportes",
-  "Simulação": "https://via.placeholder.com/300x200?text=Simulação",
-  "Puzzle": "https://via.placeholder.com/300x200?text=Puzzle",
-};
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FaRunning, FaDragon, FaPuzzlePiece, FaShieldAlt, FaCar, FaFutbol, FaCogs, FaSkullCrossbones } from "react-icons/fa";
 
 const Categorias = () => {
-  const [categories, setCategories] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); 
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [categoryForm, setCategoryForm] = useState({ id: null, name: "", image: "" });
+  const [categories, setCategories] = useState([
+    { id: 1, name: "Aventura", icon: <FaRunning /> },
+    { id: 2, name: "Terror", icon: <FaSkullCrossbones /> },
+    { id: 3, name: "RPG", icon: <FaDragon /> },
+    { id: 4, name: "Estratégia", icon: <FaShieldAlt /> },
+    { id: 5, name: "Corrida", icon: <FaCar /> },
+    { id: 6, name: "Esportes", icon: <FaFutbol /> },
+    { id: 7, name: "Simulação", icon: <FaCogs /> },
+    { id: 8, name: "Puzzle", icon: <FaPuzzlePiece /> },
+  ]);
 
-  useEffect(() => {
-    const categoriasSalvas = localStorage.getItem("devcategories");
-    if (categoriasSalvas) {
-      setCategories(JSON.parse(categoriasSalvas));
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [modalAction, setModalAction] = useState(""); // Controlar se é editar ou criar ou excluir
+
+  const handleAddCategory = () => {
+    if (newCategoryName.trim()) {
+      const newCategory = {
+        id: categories.length + 1,
+        name: newCategoryName,
+        icon: <FaPuzzlePiece />,
+      };
+      setCategories([...categories, newCategory]);
+      setNewCategoryName("");
+      setShowModal(false);
+    }
+  };
+
+  const handleEditCategory = () => {
+    if (selectedCategory && newCategoryName.trim()) {
+      const updatedCategories = categories.map((category) =>
+        category.id === selectedCategory.id
+          ? { ...category, name: newCategoryName }
+          : category
+      );
+      setCategories(updatedCategories);
+      setShowModal(false);
+      setSelectedCategory(null);
+      setNewCategoryName("");
     }
   }, []);
 
-  const salvarNoStorage = (dados) => {
-    localStorage.setItem("devcategories", JSON.stringify(dados));
+  const handleRemoveCategory = () => {
+    const updatedCategories = categories.filter(
+      (category) => category.id !== selectedCategory.id
+    );
+    setCategories(updatedCategories);
+    setShowModal(false);
+    setSelectedCategory(null);
+    setNewCategoryName("");
   };
 
-  const handleShowModal = (mode, category = null) => {
-    setModalMode(mode);
+  const openEditModal = (category) => {
     setSelectedCategory(category);
-    setCategoryForm(
-      category || {
-        id: Date.now(),
-        name: "",
-        image: categoriaImagens["Aventura"] 
-      }
-    );
+    setNewCategoryName(category.name);
+    setModalAction("edit"); // Define que a ação é de editar
     setShowModal(true);
   };
 
-  const handleCloseModal = () => {
+  const openCreateModal = () => {
+    setSelectedCategory(null);
+    setNewCategoryName("");
+    setModalAction("create"); // Define que a ação é de criar
+    setShowModal(true);
+  };
+
+  const openRemoveModal = (category) => {
+    setSelectedCategory(category);
+    setModalAction("remove"); // Define que a ação é de excluir
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
     setShowModal(false);
+    setSelectedCategory(null);
+    setNewCategoryName("");
+    setModalAction(""); // Resetar a ação do modal
   };
 
   const handleSubmit = () => {
@@ -65,68 +101,152 @@ const Categorias = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Gerenciar Categorias</h2>
+    <div className="container mt-5">
+      <h1 className="mb-4">Gerenciar Categorias</h1>
 
-      <Card className="mb-4" onClick={() => handleShowModal("add")} style={{ cursor: "pointer" }}>
-        <Card.Body className="text-center">
-          <h5>+ Nova Categoria</h5>
-        </Card.Body>
-      </Card>
+      {/* Botão Nova Categoria */}
+      <div
+        className="mb-4"
+        onClick={openCreateModal} // Abre o modal para criar nova categoria
+        style={{ cursor: "pointer" }}
+      >
+        <div className="card text-center">
+          <div className="card-body">
+            <h5>+ Nova Categoria</h5>
+          </div>
+        </div>
+      </div>
 
+      {/* Lista de Categorias */}
       <div className="row">
         {categories.map((category) => (
-          <div className="col-md-4 mb-4" key={category.id}>
-            <Card>
-              <Card.Img
-                variant="top"
-                src={category.image}
-                alt={category.name}
-                style={{ maxHeight: "200px", objectFit: "cover" }}
-              />
-              <Card.Body>
-                <Card.Title>{category.name}</Card.Title>
-                <Button
-                  variant="warning"
-                  className="me-2"
-                  onClick={() => handleShowModal("edit", category)}
+          <div key={category.id} className="col-md-3 mb-4">
+            <div className="card p-2 d-flex align-items-center" style={{ width: "auto" }}>
+              <div className="d-flex align-items-center">
+                {/* Ícone da Categoria */}
+                <div className="me-2" style={{ fontSize: "1.5rem" }}>
+                  {category.icon}
+                </div>
+                <div>
+                  <h5 className="card-title m-0">{category.name}</h5>
+                </div>
+              </div>
+              <div className="mt-2">
+                <button
+                  className="btn btn-primary btn-sm me-2"
+                  onClick={() => openEditModal(category)}
                 >
                   Editar
-                </Button>
-                <Button variant="danger" onClick={() => setShowModal(true)}>
-                  Excluir
-                </Button>
-              </Card.Body>
-            </Card>
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => openRemoveModal(category)}
+                >
+                  Apagar
+                </button>
+              </div>
+            </div>
           </div>
         ))}
       </div>
 
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>{modalMode === "add" ? "Adicionar Categoria" : "Editar Categoria"}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="categoryName">
-              <Form.Label>Nome da categoria</Form.Label>
-              <Form.Control
-                type="text"
-                value={categoryForm.name}
-                onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            {modalMode === "add" ? "Adicionar" : "Salvar Alterações"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {/* Modal */}
+      {showModal && (
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          style={{
+            display: "block",
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1050,
+          }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  {modalAction === "edit" && "Editar Categoria"}
+                  {modalAction === "create" && "Criar Nova Categoria"}
+                  {modalAction === "remove" && "Excluir Categoria"}
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={closeModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {modalAction === "edit" && (
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    placeholder="Nome da Categoria"
+                  />
+                )}
+                {modalAction === "create" && (
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    placeholder="Nome da Categoria"
+                  />
+                )}
+                {modalAction === "remove" && (
+                  <p>Tem certeza que deseja apagar essa categoria?</p>
+                )}
+              </div>
+              <div className="modal-footer">
+                {modalAction === "edit" && (
+                  <>
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleEditCategory}
+                    >
+                      Salvar Alterações
+                    </button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={closeModal}
+                    >
+                      Cancelar
+                    </button>
+                  </>
+                )}
+                {modalAction === "create" && (
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleAddCategory}
+                  >
+                    Criar Categoria
+                  </button>
+                )}
+                {modalAction === "remove" && (
+                  <>
+                    <button
+                      className="btn btn-danger"
+                      onClick={handleRemoveCategory}
+                    >
+                      Excluir
+                    </button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={closeModal}
+                    >
+                      Cancelar
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
