@@ -4,28 +4,20 @@ const PromoCard = (props) => {
   const [showModal, setShowModal] = useState(false);
 
   const precoComDesconto = props.preco - (props.preco * props.desconto) / 100;
-  const toggleModal = () => setShowModal(!showModal);
 
-  const genero = props.genero || "Ação / Mundo Aberto";
-  const classificacao = props.classificacao || "16+";
-  const descricao =
-    props.descricao ||
-    "Explore um vasto mundo pós-apocalíptico repleto de inimigos, aliados e decisões que afetam sua jornada.";
-  const requisitos = props.requisitos || [
-    "Sistema: Windows 10 64-bit",
-    "Processador: Intel Core i5-6600K",
-    "Memória: 8 GB de RAM",
-    "Placa de vídeo: GTX 1050 Ti",
-    "Armazenamento: 60 GB de espaço disponível",
-  ];
+  const formatarMoeda = (valor) =>
+    valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+  const toggleModal = () => setShowModal(!showModal);
 
   return (
     <>
+      {/* CARD NORMAL (3 CARDS POR LINHA, ESTILO ANTERIOR) */}
       <div
         id="PromoCard"
         className="promoCard card border-0 overflow-hidden"
         onClick={toggleModal}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer", width: "100%", maxWidth: "320px" }}
       >
         <img
           className="card-img-top object-fit-cover"
@@ -35,22 +27,28 @@ const PromoCard = (props) => {
         />
         <div className="card-body d-flex flex-column gap-2">
           <h5
-            data-bs-toggle="tooltip"
-            title={props.titulo}
-            className="card-title text-uppercase text-truncate mw-100 h-100 fw-bold text-light text-nowrap"
+            className="card-title text-uppercase text-truncate fw-bold text-light"
           >
             {props.titulo}
           </h5>
-          <div className="m-0 row h-100 align-items-center justify-content-center">
-            <span className="desconto col-4 fw-bold h5 m-0 d-flex align-items-center">
+          <div className="d-flex justify-content-between align-items-center">
+            {/* Modificação para o quadrado em volta da porcentagem e a cor verde */}
+            <span
+              className="desconto text-light fw-bold p-1 rounded"
+              style={{
+                backgroundColor: "black",
+                color: "green",
+                fontSize: "1.2rem",
+              }}
+            >
               -{props.desconto}%
             </span>
-            <div className="col bg-dark">
-              <p className="m-0 p-0 text-end text-secondary text-decoration-line-through small">
-                <small>{props.precoFormatado}</small>
+            <div className="text-end">
+              <p className="text-secondary text-decoration-line-through small m-0">
+                {formatarMoeda(props.preco)}
               </p>
-              <p className="corValor m-0 p-0 fs-4 text-end fw-bolder">
-                {props.formatarMoeda(precoComDesconto)}
+              <p className="corValor text-success fw-bold fs-5 m-0">
+                {formatarMoeda(precoComDesconto)}
               </p>
             </div>
           </div>
@@ -68,7 +66,7 @@ const PromoCard = (props) => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* MODAL AO CLICAR */}
       {showModal && (
         <div
           className="modal fade show"
@@ -102,15 +100,12 @@ const PromoCard = (props) => {
                     />
                   </div>
                   <div className="col-md-8">
-                    <p><strong>Gênero:</strong> {genero}</p>
-                    <p><strong>Classificação:</strong> {classificacao}</p>
-                    <p><strong>Descrição:</strong> {descricao}</p>
-                    <p><strong>Requisitos mínimos:</strong></p>
-                    <ul>
-                      {requisitos.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
+                    <p><strong>Categoria:</strong> {props.categoria || "Ação / Mundo Aberto"}</p>
+                    {/* Descrição personalizada */}
+                    <p><strong>Descrição:</strong> {props.descricao || "Mergulhe em uma aventura épica com gráficos impressionantes e jogabilidade envolvente. Cada missão traz novas emoções, com um mundo aberto para explorar ao seu ritmo."}</p>
+                    <p><strong>Preço original:</strong> {formatarMoeda(props.preco)}</p>
+                    <p><strong>Desconto:</strong> {props.desconto}%</p>
+                    <p><strong>Preço com desconto:</strong> {formatarMoeda(precoComDesconto)}</p>
                   </div>
                 </div>
               </div>

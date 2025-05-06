@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import GameCard from "./GameCard";
 
 const OutrosJogos = () => {
-  const games = React.useMemo(
+  const [jogoSelecionado, setJogoSelecionado] = useState(null);
+
+  const games = useMemo(
     () => [
       {
         id: 1,
         titulo: "Counter-Strike 2",
         preco: 0.0,
         desconto: 0,
-        imagem:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg",
-        descricao:
-          "O clássico FPS competitivo retorna com gráficos renovados e jogabilidade ainda mais precisa. Perfeito para amantes de tiro tático.",
+        imagem: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg",
+        descricao: "O clássico FPS competitivo retorna com gráficos renovados e jogabilidade ainda mais precisa. Perfeito para amantes de tiro tático.",
         categoria: "FPS",
       },
       {
@@ -20,10 +20,8 @@ const OutrosJogos = () => {
         titulo: "Cyberpunk 2077",
         preco: 129.99,
         desconto: 20,
-        imagem:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
-        descricao:
-          "Explore Night City como um mercenário em um futuro distópico, com narrativa profunda e visuais impressionantes.",
+        imagem: "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
+        descricao: "Explore Night City como um mercenário em um futuro distópico, com narrativa profunda e visuais impressionantes.",
         categoria: "RPG de Ação",
       },
       {
@@ -31,10 +29,8 @@ const OutrosJogos = () => {
         titulo: "Elden Ring",
         preco: 249.9,
         desconto: 35,
-        imagem:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
-        descricao:
-          "Uma aventura épica em mundo aberto criada por Hidetaka Miyazaki e George R. R. Martin. Desafios intensos e lore profundo.",
+        imagem: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
+        descricao: "Uma aventura épica em mundo aberto criada por Hidetaka Miyazaki e George R. R. Martin. Desafios intensos e lore profundo.",
         categoria: "RPG",
       },
       {
@@ -42,10 +38,8 @@ const OutrosJogos = () => {
         titulo: "Red Dead Redemption 2",
         preco: 199.9,
         desconto: 40,
-        imagem:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg",
-        descricao:
-          "Viva o Velho Oeste como Arthur Morgan em uma jornada cinematográfica com detalhes incríveis e mundo vivo.",
+        imagem: "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg",
+        descricao: "Viva o Velho Oeste como Arthur Morgan em uma jornada cinematográfica com detalhes incríveis e mundo vivo.",
         categoria: "Ação e Aventura",
       },
       {
@@ -53,10 +47,8 @@ const OutrosJogos = () => {
         titulo: "Hogwarts Legacy",
         preco: 229.99,
         desconto: 10,
-        imagem:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg",
-        descricao:
-          "Mergulhe no mundo bruxo de Hogwarts no século XIX. Crie seu próprio bruxo e descubra segredos mágicos.",
+        imagem: "https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg",
+        descricao: "Mergulhe no mundo bruxo de Hogwarts no século XIX. Crie seu próprio bruxo e descubra segredos mágicos.",
         categoria: "RPG de Ação",
       },
       {
@@ -64,10 +56,8 @@ const OutrosJogos = () => {
         titulo: "The Witcher 3: Wild Hunt",
         preco: 89.99,
         desconto: 60,
-        imagem:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg",
-        descricao:
-          "Acompanhe Geralt de Rívia em sua busca épica por Ciri. Combate envolvente, escolhas impactantes e um dos melhores RPGs já feitos.",
+        imagem: "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg",
+        descricao: "Acompanhe Geralt de Rívia em sua busca épica por Ciri. Combate envolvente, escolhas impactantes e um dos melhores RPGs já feitos.",
         categoria: "RPG",
       },
       {
@@ -75,10 +65,8 @@ const OutrosJogos = () => {
         titulo: "God of War",
         preco: 159.99,
         desconto: 25,
-        imagem:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg",
-        descricao:
-          "Kratos retorna em uma jornada emocional com seu filho Atreus. Uma releitura nórdica da lenda do Deus da Guerra.",
+        imagem: "https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg",
+        descricao: "Kratos retorna em uma jornada emocional com seu filho Atreus. Uma releitura nórdica da lenda do Deus da Guerra.",
         categoria: "Ação e Aventura",
       },
       {
@@ -86,15 +74,16 @@ const OutrosJogos = () => {
         titulo: "FIFA 24",
         preco: 299.9,
         desconto: 15,
-        imagem:
-          "https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/header.jpg",
-        descricao:
-          "O mais recente simulador de futebol da EA Sports, com gráficos realistas e modo carreira renovado.",
+        imagem: "https://cdn.cloudflare.steamstatic.com/steam/apps/2195250/header.jpg",
+        descricao: "O mais recente simulador de futebol da EA Sports, com gráficos realistas e modo carreira renovado.",
         categoria: "Esportes",
       },
     ],
     []
   );
+
+  const formatarMoeda = (valor) =>
+    valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   return (
     <div id="outrosJogos" className="container w-75 my-5">
@@ -103,9 +92,61 @@ const OutrosJogos = () => {
       </h2>
       <div id="itensJogos" className="d-flex flex-column ms-md-5 ps-md-3 gap-4">
         {games.map((item) => (
-          <GameCard key={item.id} {...item} />
+          <div key={item.id} onClick={() => setJogoSelecionado(item)} style={{ cursor: "pointer" }}>
+            <GameCard {...item} />
+          </div>
         ))}
       </div>
+
+      {/* Modal */}
+      {jogoSelecionado && (
+        <div
+          className="modal fade show"
+          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.8)" }}
+          tabIndex="-1"
+          role="dialog"
+          onClick={() => setJogoSelecionado(null)}
+        >
+          <div
+            className="modal-dialog modal-lg"
+            role="document"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-content bg-dark text-light">
+              <div className="modal-header">
+                <h5 className="modal-title">{jogoSelecionado.titulo}</h5>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  onClick={() => setJogoSelecionado(null)}
+                ></button>
+              </div>
+              <div className="modal-body row g-4">
+                <div className="col-md-4 text-center">
+                  <img
+                    src={jogoSelecionado.imagem}
+                    alt={jogoSelecionado.titulo}
+                    className="img-fluid rounded"
+                    style={{ maxHeight: "300px", objectFit: "cover" }}
+                  />
+                </div>
+                <div className="col-md-8">
+                  <p><strong>Gênero:</strong> {jogoSelecionado.categoria}</p>
+                  <p><strong>Descrição:</strong> {jogoSelecionado.descricao}</p>
+                  <p><strong>Preço original:</strong> {formatarMoeda(jogoSelecionado.preco)}</p>
+                  <p><strong>Desconto:</strong> {jogoSelecionado.desconto}%</p>
+                  <p><strong>Preço final:</strong> {formatarMoeda(jogoSelecionado.preco - (jogoSelecionado.preco * jogoSelecionado.desconto / 100))}</p>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={() => setJogoSelecionado(null)}>
+                  Fechar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
