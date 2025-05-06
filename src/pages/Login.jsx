@@ -9,15 +9,21 @@ const LoginCadastro = () => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [souAdmin, setSouAdmin] = useState(false); // <- Novo estado para definir o role
   const navigate = useNavigate();
-  const { login } = useAuth(); // novo hook
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (modoCadastro) {
       if (nome && email && senha) {
-        const novoUsuario = { nome, email, senha, role: "CLIENTE" };
+        const novoUsuario = {
+          nome,
+          email,
+          senha,
+          role: souAdmin ? "ADMIN" : "CLIENTE", // <- Define o papel com base na escolha
+        };
         try {
           localStorage.setItem("devlogin", JSON.stringify(novoUsuario));
           alert("Cadastro realizado com sucesso!");
@@ -25,6 +31,7 @@ const LoginCadastro = () => {
           setNome("");
           setEmail("");
           setSenha("");
+          setSouAdmin(false); // Reseta checkbox após cadastro
         } catch (error) {
           console.error("Erro ao salvar no localStorage:", error);
           alert("Ocorreu um erro ao salvar os dados. Tente novamente.");
@@ -40,7 +47,6 @@ const LoginCadastro = () => {
           usuarioSalvo.email === email &&
           usuarioSalvo.senha === senha
         ) {
-          // Salva o usuário no contexto
           await login(usuarioSalvo);
           navigate("/");
         } else {
@@ -68,17 +74,33 @@ const LoginCadastro = () => {
 
         <form onSubmit={handleSubmit}>
           {modoCadastro && (
-            <div className="form-floating mb-3">
-              <input
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                className="form-control bg-secondary text-white border-0 rounded-3 placeholder-white"
-                type="text"
-                id="frmNome"
-                placeholder="Nome"
-              />
-              <label htmlFor="frmNome">Nome</label>
-            </div>
+            <>
+              <div className="form-floating mb-3">
+                <input
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  className="form-control bg-secondary text-white border-0 rounded-3 placeholder-white"
+                  type="text"
+                  id="frmNome"
+                  placeholder="Nome"
+                />
+                <label htmlFor="frmNome">Nome</label>
+              </div>
+
+              {/* Checkbox para indicar se o usuário é admin */}
+              <div className="form-check mb-3">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="souAdminCheck"
+                  checked={souAdmin}
+                  onChange={(e) => setSouAdmin(e.target.checked)}
+                />
+                <label className="form-check-label" htmlFor="souAdminCheck">
+                  Sou Admin
+                </label>
+              </div>
+            </>
           )}
 
           <div className="form-floating mb-3">
