@@ -1,58 +1,69 @@
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-import Login from "../pages/Login";
-import Usuario from "../pages/Usuario";
-import Checkout from "../pages/checkout";
 import App from "../App";
+import Login from "../pages/Login";
+import DashBoardAdm from "./DashBoardAdm";
+import Categorias from "../pages/Categorias";
+import Cupons from "../pages/Cupons";
+import Jogos from "../pages/Jogos";
+import AdminPainel from "./AdminPainel";
+import Usuario from "../pages/Usuario";
 
-// Página de administrador ainda não criada, mas será usada futuramente
-// import AdminPanel from "../pages/adminPanel"; // crie depois
-
-// Componente que define todas as rotas principais da aplicação
 export default function MainRoutes() {
-  // Obtém o usuário atual e o estado de carregamento da autenticação
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
+
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    const salvaUsuario = localStorage.getItem("devlogin");
+    salvaUsuario && setUsuario(JSON.parse(salvaUsuario));
+  }, []);
+
   if (loading) return <p>Carregando...</p>;
+
   return (
     <Routes>
-      {/* Rota pública (acessível a qualquer usuário) */}
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
 
-      {/* Rotas protegidas: acessíveis apenas por usuários com papel CLIENTE ou ADMIN */}
+      {/* Somente ADMIN acessa */}
       <Route
-        path="/usuario"
+        path="/admin"
         element={
-          user?.role === "CLIENTE" || user?.role === "ADMIN" ? (
-            <Usuario /> // se for CLIENTE ou ADMIN, mostra a página
-          ) : (
-            <Navigate to="/login" /> // senão, redireciona para login
-          )
-        }
-      />
-      <Route
-        path="/carrinho"
-        element={
-          user?.role === "CLIENTE" || user?.role === "ADMIN" ? (
-            <Checkout />
+          usuario?.role === "ADMIN" ? (
+            <DashBoardAdm />
           ) : (
             <Navigate to="/login" />
           )
         }
       />
-
-      {/* Rota protegida: acessível somente por ADMINs */}
       <Route
-        path="/admin"
+        path="/admin/categorias"
         element={
-          user?.role === "ADMIN" ? (
-            <AdminPanel /> // mostra painel de admin
-          ) : (
-            <Navigate to="/login" /> // redireciona se não for admin
-          )
+          usuario?.role === "ADMIN" ? <Categorias /> : <Navigate to="/login" />
         }
       />
+      <Route
+        path="/admin/cupons"
+        element={
+          usuario?.role === "ADMIN" ? <Cupons /> : <Navigate to="/login" />
+        }
+      />
+      <Route
+        path="/admin/jogos"
+        element={
+          usuario?.role === "ADMIN" ? <Jogos /> : <Navigate to="/login" />
+        }
+      />
+      <Route
+        path="/admin/painel"
+        element={
+          usuario?.role === "ADMIN" ? <AdminPainel /> : <Navigate to="/login" />
+          // <AdminPainel />
+        }
+      />
+      <Route path="/usuario" element={<Usuario />} />
     </Routes>
   );
 }

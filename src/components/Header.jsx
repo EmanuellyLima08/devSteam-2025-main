@@ -53,8 +53,8 @@ const Header = (props) => {
               >
                 {usuario.role === "ADMIN" && (
                   <li>
-                    <Link to={"/cadastroJogos"} className="dropdown-item">
-                      Cadastro de Jogos
+                    <Link to={"/admin/painel"} className="dropdown-item">
+                      Painel Administrativo
                     </Link>
                   </li>
                 )}

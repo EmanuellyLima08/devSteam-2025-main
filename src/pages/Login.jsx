@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "../context/AuthContext"; // novo hook
-// import "../styles/LoginCadastro.css";
 
 const LoginCadastro = () => {
   const [modoCadastro, setModoCadastro] = useState(false);
@@ -48,7 +47,13 @@ const LoginCadastro = () => {
           usuarioSalvo.senha === senha
         ) {
           await login(usuarioSalvo);
-          navigate("/");
+
+          // Redirecionamento baseado na role
+          if (usuarioSalvo.role === "ADMIN") {
+            navigate("/admin");
+          } else {
+            navigate("/usuario");
+          }
         } else {
           alert("E-mail ou senha incorretos!");
         }
