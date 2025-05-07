@@ -140,6 +140,8 @@ const Promotion = (props) => {
             precoFormatado={formatarMoeda(jogo.preco)}
             desconto={jogo.desconto}
             imagem={jogo.imagem}
+            descricao={jogo.descricao}
+            categoria={jogo.categoria}
             formatarMoeda={formatarMoeda} // Passando a função para o PromoCard
             onAddCarrinho={() => props.onAddCarrinho(jogo)}
           />

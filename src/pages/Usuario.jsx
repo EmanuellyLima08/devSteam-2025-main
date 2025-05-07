@@ -1,37 +1,105 @@
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Navigate, useNavigate } from "react-router";
 
 const Usuario = () => {
-  const [abaAtiva, setAbaAtiva] = useState('dados');
+  const [abaAtiva, setAbaAtiva] = useState("dados");
   const [editando, setEditando] = useState(false);
   const [editandoCartao, setEditandoCartao] = useState(false);
 
   // Estado para os dados do usuário
-  const [nomeUsuario, setNomeUsuario] = useState('Emanuelly Lima');
-  const [dataNascimento, setDataNascimento] = useState('25/01/2008');
-  const [telefone, setTelefone] = useState('');
-  const [chavePix, setChavePix] = useState('');
-  const [email, setEmail] = useState('');
+  const [nomeUsuario, setNomeUsuario] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [chavePix, setChavePix] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
-  const [numeroCartao, setNumeroCartao] = useState('');
-  const [nomeCartao, setNomeCartao] = useState('');
-  const [validadeCartao, setValidadeCartao] = useState('');
+  const [numeroCartao, setNumeroCartao] = useState("");
+  const [nomeCartao, setNomeCartao] = useState("");
+  const [validadeCartao, setValidadeCartao] = useState("");
 
-  const handleLogout = () => {
-    localStorage.removeItem('devusuario');
-    window.location.href = '/login';
+  const closeLogin = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("devlogin");
+    navigate("/");
+  };
+
+  useEffect(() => {
+    const existingData = JSON.parse(localStorage.getItem("devlogin"));
+    if (existingData) {
+      setNomeUsuario(existingData.nome || "");
+      setDataNascimento(existingData.dataNascimento || "");
+      setTelefone(existingData.telefone || "");
+      setChavePix(existingData.chavePix || "");
+      setEmail(existingData.email || "");
+    }
+  }, []);
+
+  const editarDados = () => {
+    const existingData = JSON.parse(localStorage.getItem("devlogin"));
+    if (existingData) {
+      setNomeUsuario(existingData.nome || nomeUsuario);
+      setDataNascimento(existingData.dataNascimento || dataNascimento);
+      setTelefone(existingData.telefone || telefone);
+      setChavePix(existingData.chavePix || chavePix);
+      setEmail(existingData.email || email);
+    }
+    setEditando(true);
+  };
+
+  const salvaDados = (e) => {
+    e.preventDefault();
+    setEditando(false);
+
+    // Obtém os dados existentes do localStorage
+    const existingData = JSON.parse(localStorage.getItem("devlogin")) || {};
+
+    // Atualiza apenas os campos editáveis, mantendo os demais
+    const updatedData = {
+      ...existingData,
+      nome: nomeUsuario,
+      dataNascimento,
+      telefone,
+      chavePix,
+      email,
+    };
+
+    // Salva os dados atualizados no localStorage
+    localStorage.setItem("devlogin", JSON.stringify(updatedData));
   };
 
   const renderCartaoVisual = () => (
-    <div style={{ backgroundColor: '#999', padding: '20px', borderRadius: '10px', color: 'white', width: '300px', height: '180px', position: 'relative' }}>
-      <div style={{ marginBottom: '20px', fontSize: '18px' }}>💳 Cartão</div>
-      <div style={{ fontSize: '20px', letterSpacing: '2px', marginBottom: '10px' }}>
-        {numeroCartao || '•••• •••• •••• ••••'}
+    <div
+      style={{
+        backgroundColor: "#999",
+        padding: "20px",
+        borderRadius: "10px",
+        color: "white",
+        width: "300px",
+        height: "180px",
+        position: "relative",
+      }}
+    >
+      <div style={{ marginBottom: "20px", fontSize: "18px" }}>💳 Cartão</div>
+      <div
+        style={{ fontSize: "20px", letterSpacing: "2px", marginBottom: "10px" }}
+      >
+        {numeroCartao || "•••• •••• •••• ••••"}
       </div>
-      <div style={{ fontSize: '14px' }}>NOME</div>
-      <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{nomeCartao || 'NOME COMPLETO'}</div>
+      <div style={{ fontSize: "14px" }}>NOME</div>
+      <div style={{ fontSize: "16px", fontWeight: "bold" }}>
+        {nomeCartao || "NOME COMPLETO"}
+      </div>
       {validadeCartao && (
-        <div style={{ position: 'absolute', bottom: '20px', right: '20px', fontSize: '14px' }}>
+        <div
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px",
+            fontSize: "14px",
+          }}
+        >
           Validade {validadeCartao}
         </div>
       )}
@@ -40,23 +108,27 @@ const Usuario = () => {
 
   const renderConteudo = () => {
     switch (abaAtiva) {
-      case 'dados':
+      case "dados":
         return (
           <div>
             <h4>Meus Dados</h4>
             {!editando ? (
               <div>
-                <p><strong>Nome:</strong> {nomeUsuario}</p>
-                <p><strong>Data de nascimento:</strong> {dataNascimento}</p>
-                <button className="btn btn-outline-primary" onClick={() => setEditando(true)}>Editar</button>
+                <p>
+                  <strong>Nome:</strong> {nomeUsuario}
+                </p>
+                <p>
+                  <strong>Data de nascimento:</strong> {dataNascimento}
+                </p>
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={() => editarDados()}
+                >
+                  Editar
+                </button>
               </div>
             ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setEditando(false);
-                }}
-              >
+              <form onSubmit={(e) => salvaDados(e)}>
                 <div className="mb-3">
                   <label className="form-label">Nome completo</label>
                   <input
@@ -106,13 +178,15 @@ const Usuario = () => {
                     placeholder="Digite seu email"
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">Salvar</button>
+                <button type="submit" className="btn btn-primary">
+                  Salvar
+                </button>
               </form>
             )}
           </div>
         );
 
-      case 'cartoes':
+      case "cartoes":
         return (
           <div>
             <h4>Cartão</h4>
@@ -120,10 +194,22 @@ const Usuario = () => {
               <div className="col-md-6">
                 {!editandoCartao ? (
                   <div>
-                    <p><strong>Número:</strong> {numeroCartao || '•••• •••• •••• ••••'}</p>
-                    <p><strong>Nome:</strong> {nomeCartao || 'NOME COMPLETO'}</p>
-                    <p><strong>Validade:</strong> {validadeCartao || 'MM/AA'}</p>
-                    <button className="btn btn-outline-primary" onClick={() => setEditandoCartao(true)}>Editar</button>
+                    <p>
+                      <strong>Número:</strong>{" "}
+                      {numeroCartao || "•••• •••• •••• ••••"}
+                    </p>
+                    <p>
+                      <strong>Nome:</strong> {nomeCartao || "NOME COMPLETO"}
+                    </p>
+                    <p>
+                      <strong>Validade:</strong> {validadeCartao || "MM/AA"}
+                    </p>
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() => setEditandoCartao(true)}
+                    >
+                      Editar
+                    </button>
                   </div>
                 ) : (
                   <form
@@ -144,7 +230,9 @@ const Usuario = () => {
                       />
                     </div>
                     <div className="mb-3">
-                      <label className="form-label">*Nome impresso no cartão</label>
+                      <label className="form-label">
+                        *Nome impresso no cartão
+                      </label>
                       <input
                         type="text"
                         className="form-control"
@@ -165,11 +253,20 @@ const Usuario = () => {
                         />
                       </div>
                       <div style={{ flex: 1 }}>
-                        <label className="form-label">*Código de segurança</label>
-                        <input type="text" className="form-control" placeholder="CVV" maxLength={3} />
+                        <label className="form-label">
+                          *Código de segurança
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="CVV"
+                          maxLength={3}
+                        />
                       </div>
                     </div>
-                    <button type="submit" className="btn btn-primary">Salvar</button>
+                    <button type="submit" className="btn btn-primary">
+                      Salvar
+                    </button>
                   </form>
                 )}
               </div>
@@ -180,11 +277,13 @@ const Usuario = () => {
           </div>
         );
 
-      case 'sair':
+      case "sair":
         return (
           <div>
             <h4>Sair da conta?</h4>
-            <button className="btn btn-primary" onClick={handleLogout}>Sair</button>
+            <button className="btn btn-primary" onClick={() => closeLogin()}>
+              Sair
+            </button>
           </div>
         );
 
@@ -198,21 +297,38 @@ const Usuario = () => {
       <div className="row">
         <div className="col-md-3">
           <div className="list-group">
-            <button onClick={() => { setAbaAtiva('dados'); setEditando(false); }} className={`list-group-item list-group-item-action ${abaAtiva === 'dados' ? 'active' : ''}`}>
+            <button
+              onClick={() => {
+                setAbaAtiva("dados");
+                setEditando(false);
+              }}
+              className={`list-group-item list-group-item-action ${
+                abaAtiva === "dados" ? "active" : ""
+              }`}
+            >
               Editar Meus Dados
             </button>
-            <button onClick={() => { setAbaAtiva('cartoes'); setEditandoCartao(false); }} className={`list-group-item list-group-item-action ${abaAtiva === 'cartoes' ? 'active' : ''}`}>
+            <button
+              onClick={() => {
+                setAbaAtiva("cartoes");
+                setEditandoCartao(false);
+              }}
+              className={`list-group-item list-group-item-action ${
+                abaAtiva === "cartoes" ? "active" : ""
+              }`}
+            >
               Cartões
             </button>
-            <button onClick={() => setAbaAtiva('sair')} className="list-group-item list-group-item-action text-danger">
+            <button
+              onClick={() => setAbaAtiva("sair")}
+              className="list-group-item list-group-item-action text-danger"
+            >
               Sair
             </button>
           </div>
         </div>
         <div className="col-md-9">
-          <div className="card p-4 shadow-sm">
-            {renderConteudo()}
-          </div>
+          <div className="card p-4 shadow-sm">{renderConteudo()}</div>
         </div>
       </div>
     </div>
