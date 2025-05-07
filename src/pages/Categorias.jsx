@@ -5,7 +5,6 @@ import {
   FaCar, FaFutbol, FaCogs, FaSkullCrossbones
 } from "react-icons/fa";
 
-
 const Categorias = () => {
   const [categories, setCategories] = useState([
     { id: 1, name: "Aventura", icon: <FaRunning /> },
@@ -88,36 +87,57 @@ const Categorias = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">Gerenciar Categorias</h1>
+    <div className="container py-5" style={{ backgroundColor: "#1a1125", minHeight: "100vh" }}>
+      <h1 className="mb-4 text-center" style={{ color: "#9d4edd" }}>Gerenciar Categorias</h1>
 
       {/* Botão Nova Categoria */}
-      <div className="mb-4" onClick={openCreateModal} style={{ cursor: "pointer" }}>
-        <div className="card text-center">
-          <div className="card-body">
-            <h5>+ Nova Categoria</h5>
-          </div>
-        </div>
+      <div className="mb-4 text-center">
+        <button
+          className="btn"
+          onClick={openCreateModal}
+          style={{
+            backgroundColor: "#9d4edd",
+            color: "#f1f1f1",
+            border: "none",
+            transition: "0.3s",
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#c77dff"}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#9d4edd"}
+        >
+          + Nova Categoria
+        </button>
       </div>
 
       {/* Lista de Categorias */}
       <div className="row">
         {categories.map((category) => (
           <div key={category.id} className="col-md-3 mb-4">
-            <div className="card p-2 d-flex align-items-center" style={{ width: "auto" }}>
-              <div className="d-flex align-items-center">
-                <div className="me-2" style={{ fontSize: "1.5rem" }}>
+            <div
+              className="card text-center"
+              style={{
+                backgroundColor: "#3c2a58",
+                border: "1px solid #9d4edd",
+                color: "#f1f1f1",
+                borderRadius: "10px"
+              }}
+            >
+              <div className="card-body">
+                <div style={{ fontSize: "1.8rem", color: "#c77dff" }}>
                   {category.icon}
                 </div>
-                <div>
-                  <h5 className="card-title m-0">{category.name}</h5>
-                </div>
-              </div>
-              <div className="mt-2">
-                <button className="btn btn-primary btn-sm me-2" onClick={() => openEditModal(category)}>
+                <h5 className="card-title mt-2">{category.name}</h5>
+                <button
+                  className="btn btn-sm me-2 mt-2"
+                  style={{ backgroundColor: "#9d4edd", color: "#fff", border: "none" }}
+                  onClick={() => openEditModal(category)}
+                >
                   Editar
                 </button>
-                <button className="btn btn-danger btn-sm" onClick={() => openRemoveModal(category)}>
+                <button
+                  className="btn btn-sm mt-2"
+                  style={{ backgroundColor: "#ff4dff", color: "#fff", border: "none" }}
+                  onClick={() => openRemoveModal(category)}
+                >
                   Apagar
                 </button>
               </div>
@@ -141,9 +161,9 @@ const Categorias = () => {
           }}
         >
           <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">
+            <div className="modal-content" style={{ backgroundColor: "#2c1a47", color: "#f1f1f1" }}>
+              <div className="modal-header border-0">
+                <h5 className="modal-title text-white">
                   {modalAction === "edit" && "Editar Categoria"}
                   {modalAction === "create" && "Criar Nova Categoria"}
                   {modalAction === "remove" && "Excluir Categoria"}
@@ -155,20 +175,21 @@ const Categorias = () => {
                   <input
                     type="text"
                     className="form-control"
+                    style={{ backgroundColor: "#1a1125", color: "#f1f1f1", border: "1px solid #9d4edd" }}
                     value={newCategoryName}
                     onChange={(e) => setNewCategoryName(e.target.value)}
                     placeholder="Nome da Categoria"
                   />
                 )}
                 {modalAction === "remove" && (
-                  <p>Tem certeza que deseja apagar essa categoria?</p>
+                  <p style={{ color: "#ff4dff" }}>Tem certeza que deseja apagar essa categoria?</p>
                 )}
               </div>
-              <div className="modal-footer">
+              <div className="modal-footer border-0">
                 {modalAction === "edit" && (
                   <>
-                    <button className="btn btn-primary" onClick={handleEditCategory}>
-                      Salvar Alterações
+                    <button className="btn" style={{ backgroundColor: "#9d4edd", color: "#fff" }} onClick={handleEditCategory}>
+                      Salvar
                     </button>
                     <button className="btn btn-secondary" onClick={closeModal}>
                       Cancelar
@@ -176,13 +197,13 @@ const Categorias = () => {
                   </>
                 )}
                 {modalAction === "create" && (
-                  <button className="btn btn-primary" onClick={handleAddCategory}>
-                    Criar Categoria
+                  <button className="btn" style={{ backgroundColor: "#9d4edd", color: "#fff" }} onClick={handleAddCategory}>
+                    Criar
                   </button>
                 )}
                 {modalAction === "remove" && (
                   <>
-                    <button className="btn btn-danger" onClick={handleRemoveCategory}>
+                    <button className="btn" style={{ backgroundColor: "#ff4dff", color: "#fff" }} onClick={handleRemoveCategory}>
                       Excluir
                     </button>
                     <button className="btn btn-secondary" onClick={closeModal}>

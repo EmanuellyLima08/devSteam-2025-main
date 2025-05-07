@@ -4,7 +4,7 @@ import { Card, Button, Modal, Form } from "react-bootstrap";
 const Jogos = () => {
   const [games, setGames] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); // "add" | "edit"
+  const [modalMode, setModalMode] = useState("add");
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameForm, setGameForm] = useState({ id: null, name: "", image: "" });
 
@@ -26,7 +26,7 @@ const Jogos = () => {
       game || {
         id: Date.now(),
         name: "",
-        image: ""
+        image: "",
       }
     );
     setShowModal(true);
@@ -65,39 +65,75 @@ const Jogos = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Gerenciar Jogos</h2>
-      
+    <div
+      className="container mt-4"
+      style={{ backgroundColor: "#1a1125", minHeight: "100vh", color: "#f1f1f1" }}
+    >
+      <h2 className="text-center mb-4" style={{ color: "#9d4edd" }}>
+        Gerenciar Jogos
+      </h2>
+
       {/* Botão de novo jogo */}
-      <Card className="mb-4" onClick={() => handleShowModal("add")} style={{ cursor: "pointer" }}>
-        <Card.Body className="text-center">
-          <h5>+ Novo Jogo</h5>
+      <Card
+        className="mb-4 text-center"
+        onClick={() => handleShowModal("add")}
+        style={{
+          cursor: "pointer",
+          backgroundColor: "#2c1a47",
+          color: "#f1f1f1",
+          border: "1px solid #9d4edd",
+        }}
+      >
+        <Card.Body>
+          <h5 style={{ color: "#c77dff" }}>+ Novo Jogo</h5>
         </Card.Body>
       </Card>
 
       <div className="row">
-        {/* Lista de jogos */}
         {games.map((game) => (
           <div className="col-md-4 mb-4" key={game.id}>
-            <Card>
+            <Card
+              style={{
+                backgroundColor: "#3c2a58",
+                color: "#f1f1f1",
+                border: "1px solid #9d4edd",
+              }}
+            >
               {game.image && (
                 <Card.Img
                   variant="top"
                   src={game.image}
                   alt={game.name}
-                  style={{ maxHeight: "200px", objectFit: "cover" }}
+                  style={{
+                    maxHeight: "200px",
+                    objectFit: "cover",
+                    borderBottom: "1px solid #9d4edd",
+                  }}
                 />
               )}
               <Card.Body>
-                <Card.Title>{game.name}</Card.Title>
+                <Card.Title style={{ color: "#c77dff" }}>{game.name}</Card.Title>
                 <Button
-                  variant="warning"
-                  className="me-2"
+                  style={{
+                    backgroundColor: "#9d4edd",
+                    borderColor: "#9d4edd",
+                    color: "#fff",
+                    marginRight: "8px",
+                  }}
                   onClick={() => handleShowModal("edit", game)}
+                  onMouseOver={(e) => (e.target.style.backgroundColor = "#c77dff")}
+                  onMouseOut={(e) => (e.target.style.backgroundColor = "#9d4edd")}
                 >
                   Editar
                 </Button>
-                <Button variant="danger" onClick={() => handleExcluir(game)}>
+                <Button
+                  style={{
+                    backgroundColor: "#ff4dff",
+                    borderColor: "#ff4dff",
+                    color: "#fff",
+                  }}
+                  onClick={() => handleExcluir(game)}
+                >
                   Excluir
                 </Button>
               </Card.Body>
@@ -108,15 +144,18 @@ const Jogos = () => {
 
       {/* Modal para adicionar/editar */}
       <Modal show={showModal && modalMode !== "delete"} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+        <Modal.Header
+          closeButton
+          style={{ backgroundColor: "#2c1a47", color: "#f1f1f1" }}
+        >
           <Modal.Title>
             {modalMode === "add" ? "Adicionar Jogo" : "Editar Jogo"}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ backgroundColor: "#2c1a47", color: "#f1f1f1" }}>
           <Form>
             <Form.Group controlId="gameName">
-              <Form.Label>Nome do jogo</Form.Label>
+              <Form.Label style={{ color: "#bfa8d6" }}>Nome do jogo</Form.Label>
               <Form.Control
                 type="text"
                 value={gameForm.name}
@@ -125,7 +164,7 @@ const Jogos = () => {
             </Form.Group>
 
             <Form.Group controlId="gameImage" className="mt-3">
-              <Form.Label>Imagem (URL)</Form.Label>
+              <Form.Label style={{ color: "#bfa8d6" }}>Imagem (URL)</Form.Label>
               <Form.Control
                 type="text"
                 value={gameForm.image}
@@ -134,11 +173,20 @@ const Jogos = () => {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer style={{ backgroundColor: "#2c1a47" }}>
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button
+            style={{
+              backgroundColor: "#9d4edd",
+              borderColor: "#9d4edd",
+              color: "#fff",
+            }}
+            onClick={handleSubmit}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#c77dff")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#9d4edd")}
+          >
             {modalMode === "add" ? "Adicionar" : "Salvar Alterações"}
           </Button>
         </Modal.Footer>
@@ -146,17 +194,28 @@ const Jogos = () => {
 
       {/* Modal de confirmação de exclusão */}
       <Modal show={showModal && modalMode === "delete"} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
+        <Modal.Header
+          closeButton
+          style={{ backgroundColor: "#2c1a47", color: "#f1f1f1" }}
+        >
           <Modal.Title>Confirmar Exclusão</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Tem certeza que deseja excluir o jogo <strong>{selectedGame?.name}</strong>?
+        <Modal.Body style={{ backgroundColor: "#2c1a47", color: "#f1f1f1" }}>
+          Tem certeza que deseja excluir o jogo{" "}
+          <strong style={{ color: "#ff4dff" }}>{selectedGame?.name}</strong>?
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer style={{ backgroundColor: "#2c1a47" }}>
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancelar
           </Button>
-          <Button variant="danger" onClick={confirmDelete}>
+          <Button
+            style={{
+              backgroundColor: "#ff4dff",
+              borderColor: "#ff4dff",
+              color: "#fff",
+            }}
+            onClick={confirmDelete}
+          >
             Excluir
           </Button>
         </Modal.Footer>
