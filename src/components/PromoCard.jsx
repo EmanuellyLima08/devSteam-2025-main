@@ -98,6 +98,88 @@ const PromoCard = (props) => {
           </button>
         </div>
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div
+          className="modal fade show"
+          style={{
+            display: "block",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+          }}
+          tabIndex="-1"
+          role="dialog"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="modal-dialog modal-lg"
+            role="document"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-content bg-dark text-light">
+              <div className="modal-header">
+                <h5 className="modal-title">{props.titulo}</h5>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  onClick={() => setShowModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body row g-4">
+                <div className="col-md-4 text-center">
+                  <img
+                    src={props.imagem}
+                    alt={props.titulo}
+                    className="img-fluid rounded"
+                    style={{
+                      maxHeight: "300px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div className="col-md-8">
+                  <p>
+                    <strong>Gênero:</strong> {props.categoria}
+                  </p>
+                  <p>
+                    <strong>Descrição:</strong> {props.descricao}
+                  </p>
+                  <p>
+                    <strong>Preço original:</strong>{" "}
+                    {formatarMoeda(props.preco)}
+                  </p>
+                  <p>
+                    <strong>Desconto:</strong> {props.desconto}%
+                  </p>
+                  <p>
+                    <strong>Preço final:</strong>{" "}
+                    {formatarMoeda(
+                      props.preco - (props.preco * props.desconto) / 100
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-success"
+                  onClick={() => {
+                    props.onAddCarrinho();
+                    setShowModal(false);
+                  }}
+                >
+                  Adicionar ao Carrinho
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowModal(false)}
+                >
+                  Fechar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

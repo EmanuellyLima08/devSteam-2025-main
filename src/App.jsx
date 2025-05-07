@@ -55,10 +55,10 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
+      <Header contadorJogos={carrinhoItem.length} />
       <Promotion onAddCarrinho={handleAddCarrinho} />
       {/* Agora passando as funções corretas para o CarrinhoOffCanvas */}
-      <CarrinhoOffCanvas 
+      <CarrinhoOffCanvas
         carrinhoItem={carrinhoItem}
         onUpdateCarrinho={handleUpdateCarrinho}
         onRemoveCarrinho={handleRemoveCarrinho}
