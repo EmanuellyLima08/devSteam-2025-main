@@ -49,7 +49,7 @@ const DashBoardAdm = () => {
     <div
       className="container-fluid"
       style={{
-        background: "linear-gradient(135deg, #1a1a2e, #0f3460)",
+        background: "linear-gradient(135deg, #2a003f, #4b0082)",
         minHeight: "80vh",
         width: "95%",
         color: "#fff",
@@ -61,7 +61,7 @@ const DashBoardAdm = () => {
         <div className="col-md-3">
           <div
             className="list-group shadow-lg p-3 mb-4"
-            style={{ borderRadius: "10px", backgroundColor: "#16213e" }}
+            style={{ borderRadius: "10px", backgroundColor: "#3b0066" }}
           >
             {["categorias", "cupons", "jogos"].map((item, idx) => (
               <Link
@@ -69,17 +69,17 @@ const DashBoardAdm = () => {
                 to={`/admin/${item}`}
                 className="list-group-item list-group-item-action text-white text-center"
                 style={{
-                  backgroundColor: "#0f3460",
+                  backgroundColor: "#5e0099",
                   fontWeight: "bold",
                   padding: "12px",
                   borderRadius: "8px",
                   transition: "0.3s ease-in-out",
                 }}
                 onMouseEnter={(e) =>
-                  (e.target.style.backgroundColor = "#3a6ea5")
+                  (e.target.style.backgroundColor = "#9b30ff")
                 }
                 onMouseLeave={(e) =>
-                  (e.target.style.backgroundColor = "#0f3460")
+                  (e.target.style.backgroundColor = "#5e0099")
                 }
               >
                 {item === "categorias"
@@ -106,7 +106,7 @@ const DashBoardAdm = () => {
                   style={{
                     height: `${financialData.lucro}%`,
                     width: "20px",
-                    backgroundColor: "#28a745",
+                    backgroundColor: "#8e44ad",
                     borderRadius: "6px 6px 0 0",
                   }}
                 ></div>
@@ -118,7 +118,7 @@ const DashBoardAdm = () => {
                   style={{
                     height: `${financialData.prejuizo}%`,
                     width: "20px",
-                    backgroundColor: "#dc3545",
+                    backgroundColor: "#c0392b",
                     borderRadius: "6px 6px 0 0",
                   }}
                 ></div>
@@ -141,8 +141,8 @@ const DashBoardAdm = () => {
                 height: "100px",
                 borderRadius: "50%",
                 background: `conic-gradient(
-                #007bff 0% ${financialData.jogosMaisVendidos.length * 10}%,
-                #ffc107 ${financialData.jogosMaisVendidos.length * 10}% 100%
+                #a569bd 0% ${financialData.jogosMaisVendidos.length * 10}%,
+                #f5b7b1 ${financialData.jogosMaisVendidos.length * 10}% 100%
               )`,
                 position: "relative",
               }}
@@ -170,7 +170,7 @@ const DashBoardAdm = () => {
           <div
             className="card shadow-lg text-center p-4 mb-3"
             style={{
-              backgroundColor: "#0f3460",
+              backgroundColor: "#5e0099",
               color: "#fff",
               borderRadius: "12px",
               width: "90%",
@@ -191,7 +191,7 @@ const DashBoardAdm = () => {
                 <div
                   className="card p-3 shadow-lg text-center"
                   style={{
-                    backgroundColor: "#16213e",
+                    backgroundColor: "#3b0066",
                     borderRadius: "10px",
                     color: "#fff",
                     transition: "transform 0.3s ease-in-out",
@@ -222,11 +222,11 @@ const DashBoardAdm = () => {
           <div
             className="p-3 shadow-lg text-center mt-2"
             style={{
-              backgroundColor: "#0c659c",
+              backgroundColor: "#6f42c1",
               borderRadius: "12px",
               color: "#fff",
               width: "75%",
-              boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.3)",
+              boxShadow: "0px 4px 8px rgba(255, 255, 255, 0.2)",
             }}
           >
             <h4
@@ -234,7 +234,7 @@ const DashBoardAdm = () => {
                 fontWeight: "bold",
                 textTransform: "uppercase",
                 letterSpacing: "1px",
-                color: "#D4E6F1",
+                color: "#f8e1ff",
               }}
             >
               🔔 Notificações Recentes
@@ -242,7 +242,7 @@ const DashBoardAdm = () => {
             <ul
               className="list-group text-dark"
               style={{
-                backgroundColor: "#D6EAF8",
+                backgroundColor: "#f5e6ff",
                 borderRadius: "8px",
                 padding: "10px",
               }}
@@ -255,8 +255,8 @@ const DashBoardAdm = () => {
                     fontSize: "14px",
                     fontWeight: "bold",
                     backgroundColor: "#ffffff",
-                    color: "#154360",
-                    borderBottom: "1px solid #2E86C1",
+                    color: "#6f42c1",
+                    borderBottom: "1px solid #d1b2ff",
                   }}
                 >
                   {notificacao}
