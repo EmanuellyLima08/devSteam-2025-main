@@ -14,21 +14,6 @@
     align-items: center;
   }
   
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 5px;
-  }
-  
-  .logo i {
-    font-size: 1.5rem;
-  }
-  
-  .logo span {
-    font-size: 1.2rem;
-  }
-  
   .direitos {
     font-size: 0.8rem;
     color: #ccc;
@@ -59,6 +44,17 @@
     transform: scale(1.2);
     color: #ffffff; /* Um lilás elegante */
   }
+  .logo {
+    display: flex;
+    align-items: center; /* Alinha os itens verticalmente */
+    gap: 10px; /* Espaçamento entre o logo e a escrita */
+  }
+  
+  .logoImage {
+    width: 40px; /* Ajuste conforme necessário */
+    height: auto;
+  }
+  
   
   
   
