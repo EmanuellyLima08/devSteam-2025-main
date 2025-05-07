@@ -1,10 +1,10 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+  const [usuario, setUsuario] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
       // Login local (offline)
       const usuarioSalvo = JSON.parse(localStorage.getItem("devlogin"));
       if (usuarioSalvo) {
-        setUser(usuarioSalvo); // mantém o role salvo no objeto original
+        setUsuario(usuarioSalvo); // mantém o role salvo no objeto original
       }
       setLoading(false);
     } else if (token) {
@@ -24,10 +24,10 @@ export function AuthProvider({ children }) {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
-          setUser(res.data); // { nome, role: 'ADMIN' ou 'CLIENTE' }
+          setUsuario(res.data); // { nome, role: 'ADMIN' ou 'CLIENTE' }
         })
         .catch(() => {
-          setUser(null);
+          setUsuario(null);
         })
         .finally(() => setLoading(false));
     } else {
@@ -40,7 +40,7 @@ export function AuthProvider({ children }) {
       // Login local
       localStorage.setItem("token", "fake-token");
       localStorage.setItem("devlogin", JSON.stringify(emailOuUsuario));
-      setUser(emailOuUsuario); // mantém o role do objeto passado
+      setUsuario(emailOuUsuario); // mantém o role do objeto passado
       return;
     }
 
@@ -50,22 +50,20 @@ export function AuthProvider({ children }) {
       senha,
     });
     localStorage.setItem("token", res.data.token);
-    setUser(res.data.usuario);
+    setUsuario(res.data.usuario);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("devlogin");
-    setUser(null);
+    setUsuario(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ usuario, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);
