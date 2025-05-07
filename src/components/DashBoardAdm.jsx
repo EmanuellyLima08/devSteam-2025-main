@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const DashBoardAdm = () => {
+  // chamar a api para trazer o valor de vendasHije
+  // var vendasHoje = 0;
   const [metrics, setMetrics] = useState({
-    visitas: 0,
-    tempoMedio: "0m",
-    conversao: "0%",
-    statusServidor: "🔴 Offline",
+    vendasHoje: 0, //
+    jogoMaisComprado: 0
   });
 
   const [financialData, setFinancialData] = useState({
@@ -96,7 +96,7 @@ const DashBoardAdm = () => {
             className="card shadow-lg p-3 mb-3 text-center"
             style={{ backgroundColor: "#fff", borderRadius: "10px" }}
           >
-            <h6>💰 Lucro vs Prejuízo</h6>
+            <h6>👤 Usuários cadastrados nos últimos dias</h6>
             <div
               className="d-flex justify-content-around align-items-end"
               style={{ height: "100px" }}
@@ -204,13 +204,11 @@ const DashBoardAdm = () => {
                   }
                 >
                   <h5>
-                    {key === "visitas"
-                      ? "👀 Visitas Hoje"
-                      : key === "tempoMedio"
-                      ? "⏳ Tempo Médio"
-                      : key === "conversao"
-                      ? "🔄 Taxa de Conversão"
-                      : "🖥️ Status do Servidor"}
+                    {key === "vendasHoje"
+                      ? "💵 Vendas Hoje"
+                      : key === "jogoMaisComprado"
+                      ? "🎮 Jogo mais comprado no mês"
+                      : ""}
                   </h5>
                   <h3>{value}</h3>
                 </div>
