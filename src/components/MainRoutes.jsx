@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -13,15 +13,7 @@ import Usuario from "../pages/Usuario";
 import Checkout from "../pages/Checkout"; // Adicionado para corrigir o erro
 
 export default function MainRoutes() {
-  const { loading } = useAuth();
-  const [usuario, setUsuario] = useState(null);
-
-  useEffect(() => {
-    const salvaUsuario = localStorage.getItem("devlogin");
-    if (salvaUsuario) {
-      setUsuario(JSON.parse(salvaUsuario));
-    }
-  }, []);
+  const { usuario, loading } = useAuth();
 
   if (loading) return <p>Carregando...</p>;
 
@@ -85,7 +77,7 @@ export default function MainRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route 
+      <Route
         path="/admin/gerenciarcupons"
         element={
           <ProtectedRoute role="ADMIN">
@@ -93,7 +85,7 @@ export default function MainRoutes() {
           </ProtectedRoute>
         }
       />
-      
+
       {/* Rota protegida para usuário CLIENTE */}
       <Route
         path="/usuario"
