@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FaRunning, FaDragon, FaPuzzlePiece, FaShieldAlt, FaCar, FaFutbol, FaCogs, FaSkullCrossbones } from "react-icons/fa";
+import {
+  FaRunning, FaDragon, FaPuzzlePiece, FaShieldAlt,
+  FaCar, FaFutbol, FaCogs, FaSkullCrossbones
+} from "react-icons/fa";
 
 const Categorias = () => {
   const [categories, setCategories] = useState([
@@ -17,7 +20,7 @@ const Categorias = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [newCategoryName, setNewCategoryName] = useState("");
-  const [modalAction, setModalAction] = useState(""); // Controlar se é editar ou criar ou excluir
+  const [modalAction, setModalAction] = useState("");
 
   const handleAddCategory = () => {
     if (newCategoryName.trim()) {
@@ -44,7 +47,7 @@ const Categorias = () => {
       setSelectedCategory(null);
       setNewCategoryName("");
     }
-  }, []);
+  };
 
   const handleRemoveCategory = () => {
     const updatedCategories = categories.filter(
@@ -59,20 +62,20 @@ const Categorias = () => {
   const openEditModal = (category) => {
     setSelectedCategory(category);
     setNewCategoryName(category.name);
-    setModalAction("edit"); // Define que a ação é de editar
+    setModalAction("edit");
     setShowModal(true);
   };
 
   const openCreateModal = () => {
     setSelectedCategory(null);
     setNewCategoryName("");
-    setModalAction("create"); // Define que a ação é de criar
+    setModalAction("create");
     setShowModal(true);
   };
 
   const openRemoveModal = (category) => {
     setSelectedCategory(category);
-    setModalAction("remove"); // Define que a ação é de excluir
+    setModalAction("remove");
     setShowModal(true);
   };
 
@@ -80,24 +83,7 @@ const Categorias = () => {
     setShowModal(false);
     setSelectedCategory(null);
     setNewCategoryName("");
-    setModalAction(""); // Resetar a ação do modal
-  };
-
-  const handleSubmit = () => {
-    if (modalMode === "add") {
-      categoryForm.image = categoriaImagens[categoryForm.name] || "https://via.placeholder.com/300x200?text=Nova+Categoria";
-      const atualizadas = [...categories, categoryForm];
-      setCategories(atualizadas);
-      salvarNoStorage(atualizadas);
-    } else if (modalMode === "edit") {
-      categoryForm.image = categoriaImagens[categoryForm.name] || selectedCategory.image;
-      const atualizadas = categories.map((c) =>
-        c.id === selectedCategory.id ? categoryForm : c
-      );
-      setCategories(atualizadas);
-      salvarNoStorage(atualizadas);
-    }
-    handleCloseModal();
+    setModalAction("");
   };
 
   return (
@@ -105,11 +91,7 @@ const Categorias = () => {
       <h1 className="mb-4">Gerenciar Categorias</h1>
 
       {/* Botão Nova Categoria */}
-      <div
-        className="mb-4"
-        onClick={openCreateModal} // Abre o modal para criar nova categoria
-        style={{ cursor: "pointer" }}
-      >
+      <div className="mb-4" onClick={openCreateModal} style={{ cursor: "pointer" }}>
         <div className="card text-center">
           <div className="card-body">
             <h5>+ Nova Categoria</h5>
@@ -123,7 +105,6 @@ const Categorias = () => {
           <div key={category.id} className="col-md-3 mb-4">
             <div className="card p-2 d-flex align-items-center" style={{ width: "auto" }}>
               <div className="d-flex align-items-center">
-                {/* Ícone da Categoria */}
                 <div className="me-2" style={{ fontSize: "1.5rem" }}>
                   {category.icon}
                 </div>
@@ -132,16 +113,10 @@ const Categorias = () => {
                 </div>
               </div>
               <div className="mt-2">
-                <button
-                  className="btn btn-primary btn-sm me-2"
-                  onClick={() => openEditModal(category)}
-                >
+                <button className="btn btn-primary btn-sm me-2" onClick={() => openEditModal(category)}>
                   Editar
                 </button>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => openRemoveModal(category)}
-                >
+                <button className="btn btn-danger btn-sm" onClick={() => openRemoveModal(category)}>
                   Apagar
                 </button>
               </div>
@@ -172,23 +147,10 @@ const Categorias = () => {
                   {modalAction === "create" && "Criar Nova Categoria"}
                   {modalAction === "remove" && "Excluir Categoria"}
                 </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={closeModal}
-                ></button>
+                <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>
               <div className="modal-body">
-                {modalAction === "edit" && (
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={newCategoryName}
-                    onChange={(e) => setNewCategoryName(e.target.value)}
-                    placeholder="Nome da Categoria"
-                  />
-                )}
-                {modalAction === "create" && (
+                {(modalAction === "edit" || modalAction === "create") && (
                   <input
                     type="text"
                     className="form-control"
@@ -204,40 +166,25 @@ const Categorias = () => {
               <div className="modal-footer">
                 {modalAction === "edit" && (
                   <>
-                    <button
-                      className="btn btn-primary"
-                      onClick={handleEditCategory}
-                    >
+                    <button className="btn btn-primary" onClick={handleEditCategory}>
                       Salvar Alterações
                     </button>
-                    <button
-                      className="btn btn-secondary"
-                      onClick={closeModal}
-                    >
+                    <button className="btn btn-secondary" onClick={closeModal}>
                       Cancelar
                     </button>
                   </>
                 )}
                 {modalAction === "create" && (
-                  <button
-                    className="btn btn-primary"
-                    onClick={handleAddCategory}
-                  >
+                  <button className="btn btn-primary" onClick={handleAddCategory}>
                     Criar Categoria
                   </button>
                 )}
                 {modalAction === "remove" && (
                   <>
-                    <button
-                      className="btn btn-danger"
-                      onClick={handleRemoveCategory}
-                    >
+                    <button className="btn btn-danger" onClick={handleRemoveCategory}>
                       Excluir
                     </button>
-                    <button
-                      className="btn btn-secondary"
-                      onClick={closeModal}
-                    >
+                    <button className="btn btn-secondary" onClick={closeModal}>
                       Cancelar
                     </button>
                   </>
