@@ -111,7 +111,6 @@ const Promotion = (props) => {
       localStorage.setItem("devgames", JSON.stringify(jogosConvertidos));
     }
   }, [games]);
-  
 
   useEffect(() => {
     const aleatorioJogos = games
@@ -125,7 +124,7 @@ const Promotion = (props) => {
 
   return (
     <div id="promotion" className="container w-75 my-4">
-      <h2 className="text-uppercase text-center text-md-start ms-md-5 ps-md-3 mb-4">
+      <h2 className="text-uppercase text-center text-md-start ms-md-5 ps-md-3 mb-4 fw-bold">
         Promoções
       </h2>
       <div
