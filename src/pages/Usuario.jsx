@@ -17,6 +17,11 @@ const Usuario = () => {
   const [nomeCartao, setNomeCartao] = useState('');
   const [validadeCartao, setValidadeCartao] = useState('');
 
+  const handleLogout = () => {
+    localStorage.removeItem('devusuario');
+    window.location.href = '/login';
+  };
+
   const renderCartaoVisual = () => (
     <div style={{ backgroundColor: '#999', padding: '20px', borderRadius: '10px', color: 'white', width: '300px', height: '180px', position: 'relative' }}>
       <div style={{ marginBottom: '20px', fontSize: '18px' }}>💳 Cartão</div>
@@ -179,7 +184,7 @@ const Usuario = () => {
         return (
           <div>
             <h4>Sair da conta?</h4>
-            <button className="btn btn-primary" onClick={}>Sair</button>
+            <button className="btn btn-primary" onClick={handleLogout}>Sair</button>
           </div>
         );
 
