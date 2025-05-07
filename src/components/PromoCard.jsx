@@ -12,12 +12,19 @@ const PromoCard = (props) => {
 
   return (
     <>
-      {/* CARD NORMAL (3 CARDS POR LINHA, ESTILO ANTERIOR) */}
+      {/* CARD COM ESTILO IGUAL À IMAGEM */}
       <div
         id="PromoCard"
         className="promoCard card border-0 overflow-hidden"
         onClick={toggleModal}
-        style={{ cursor: "pointer", width: "100%", maxWidth: "320px" }}
+        style={{
+          cursor: "pointer",
+          width: "100%",
+          maxWidth: "320px",
+          backgroundColor: "#824FD1", // Fundo do card
+          padding: "10px",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+        }}
       >
         <img
           className="card-img-top object-fit-cover"
@@ -25,39 +32,65 @@ const PromoCard = (props) => {
           height={300}
           alt={props.titulo}
         />
-        <div className="card-body d-flex flex-column gap-2">
-          <h5
-            className="card-title text-uppercase text-truncate fw-bold text-light"
-          >
+        <div className="card-body d-flex flex-column gap-3 text-light">
+          <h5 className="card-title text-uppercase text-truncate fw-bold">
             {props.titulo}
           </h5>
-          <div className="d-flex justify-content-between align-items-center">
-            {/* Modificação para o quadrado em volta da porcentagem e a cor verde */}
+          <div className="d-flex align-items-center gap-0">
+            {/* Tag de desconto com bordas retas */}
             <span
-              className="desconto text-light fw-bold p-1 rounded"
+              className="fw-bold p-2 text-center"
               style={{
-                backgroundColor: "black",
-                color: "green",
+                backgroundColor: "#000", // Fundo preto
+                color: "#FF4DFF", // Número rosa vibrante
                 fontSize: "1.2rem",
+                minWidth: "90px",
+                height: "40px", // Ajuste na altura para alinhar
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               -{props.desconto}%
             </span>
-            <div className="text-end">
-              <p className="text-secondary text-decoration-line-through small m-0">
+            {/* Preço dentro do fundo roxo escuro com bordas retas */}
+            <div
+              className="text-end"
+              style={{
+                backgroundColor: "#6A3BB2", // Fundo roxo escuro
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-end", // Alinhado à direita
+                justifyContent: "center",
+                minWidth: "179px", // Comprimento maior
+                height: "40px", // Altura reduzida para alinhamento perfeito
+                padding: "5px 15px",
+              }}
+            >
+              <p
+                className="text-decoration-line-through small m-0"
+                style={{ color: "#ccc", fontSize: "0.8rem" }} // Fonte menor
+              >
                 {formatarMoeda(props.preco)}
               </p>
-              <p className="corValor text-success fw-bold fs-5 m-0">
+              <p className="fw-bold fs-6 m-0" style={{ color: "#fff" }}>
                 {formatarMoeda(precoComDesconto)}
               </p>
             </div>
           </div>
           <button
             id="addCarrinho"
-            className="btn btn-success desconto text-light w-100 border-0"
+            className="btn w-100 mt-2"
             onClick={(e) => {
               e.stopPropagation();
               props.onAddCarrinho();
+            }}
+            style={{
+              backgroundColor: "#C77DFF", // Cor do botão
+              color: "#fff",
+              border: "none",
+              padding: "12px 0",
+              fontSize: "1rem",
             }}
           >
             <i className="bi bi-cart-plus me-2"></i>
@@ -65,68 +98,6 @@ const PromoCard = (props) => {
           </button>
         </div>
       </div>
-
-      {/* MODAL AO CLICAR */}
-      {showModal && (
-        <div
-          className="modal fade show"
-          style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.8)" }}
-          tabIndex="-1"
-          role="dialog"
-          onClick={toggleModal}
-        >
-          <div
-            className="modal-dialog modal-lg"
-            role="document"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-content bg-dark text-light">
-              <div className="modal-header">
-                <h5 className="modal-title">{props.titulo}</h5>
-                <button
-                  type="button"
-                  className="btn-close btn-close-white"
-                  onClick={toggleModal}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <div className="row g-4">
-                  <div className="col-md-4 text-center">
-                    <img
-                      src={props.imagem}
-                      alt={props.titulo}
-                      className="img-fluid rounded"
-                      style={{ maxHeight: "300px", objectFit: "cover" }}
-                    />
-                  </div>
-                  <div className="col-md-8">
-                    <p><strong>Categoria:</strong> {props.categoria || "Ação / Mundo Aberto"}</p>
-                    {/* Descrição personalizada */}
-                    <p><strong>Descrição:</strong> {props.descricao || "Mergulhe em uma aventura épica com gráficos impressionantes e jogabilidade envolvente. Cada missão traz novas emoções, com um mundo aberto para explorar ao seu ritmo."}</p>
-                    <p><strong>Preço original:</strong> {formatarMoeda(props.preco)}</p>
-                    <p><strong>Desconto:</strong> {props.desconto}%</p>
-                    <p><strong>Preço com desconto:</strong> {formatarMoeda(precoComDesconto)}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  className="btn btn-success"
-                  onClick={() => {
-                    props.onAddCarrinho();
-                    toggleModal();
-                  }}
-                >
-                  <i className="bi bi-cart-plus me-2"></i> Adicionar ao carrinho
-                </button>
-                <button className="btn btn-secondary" onClick={toggleModal}>
-                  Fechar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

@@ -2,7 +2,7 @@
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: #1b2838;
+  background-color: #301658;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -18,7 +18,7 @@ body {
 .promoCard {
   width: 280px;
   transition: transform 0.2s;
-  background: linear-gradient(to bottom, #19587b, #2b87ae);
+  background: linear-gradient(to bottom, #824FD1, #824FD1);
 }
 
 .promoCard:hover {
