@@ -1,8 +1,9 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 import App from "../App";
+import Header from "../components/Header";
 import Login from "../pages/Login";
 import DashBoardAdm from "./DashBoardAdm";
 import Categorias from "../pages/Categorias";
@@ -14,6 +15,8 @@ import Checkout from "../pages/Checkout"; // Adicionado para corrigir o erro
 
 export default function MainRoutes() {
   const { usuario, loading } = useAuth();
+  const location = useLocation();
+
 
   if (loading) return <p>Carregando...</p>;
 
@@ -28,6 +31,14 @@ export default function MainRoutes() {
   };
 
   return (
+    <>
+    {/* Renderiza o Header diferente para a rota "/" */}
+    {location.pathname === "/" ? (
+        <Header contadorJogos={0} />
+      ) : (
+        <Header />
+      )}
+
     <Routes>
       {/* Rotas públicas */}
       <Route path="/" element={<App />} />
@@ -96,5 +107,6 @@ export default function MainRoutes() {
         }
       />
     </Routes>
+    </>
   );
 }

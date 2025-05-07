@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // 👈 IMPORTANTE
 
 const Header = (props) => {
-  const [usuario, setUsuario] = useState(null);
-
-  useEffect(() => {
-    const salvaUsuario = localStorage.getItem("devlogin");
-    if (salvaUsuario) {
-      setUsuario(JSON.parse(salvaUsuario));
-    }
-  }, []);
+  const { usuario } = useAuth(); // 👈 USA O CONTEXTO
 
   return (
     <header
@@ -20,7 +14,6 @@ const Header = (props) => {
         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
       }}
     >
-      {/* LOGO COM IMAGEM FUTURISTA - Aproximado levemente da barra de busca */}
       <div
         id="logo"
         role="button"
@@ -36,7 +29,6 @@ const Header = (props) => {
         <span className="fw-bold fs-3 text-light">DevSteam</span>
       </div>
 
-      {/* BARRA DE PESQUISA CENTRALIZADA */}
       <div className="d-flex w-50 justify-content-center">
         <input
           type="text"
@@ -60,7 +52,6 @@ const Header = (props) => {
         }
       `}</style>
 
-      {/* PERFIL DO USUÁRIO E CARRINHO - Aproximados levemente da barra de busca e agora com mais espaço entre eles */}
       <div className="d-flex align-items-center gap-5 me-4">
         {usuario ? (
           <div className="dropdown">
@@ -97,7 +88,7 @@ const Header = (props) => {
                   to={"/"}
                   onClick={() => {
                     localStorage.removeItem("devlogin");
-                    location.reload();
+                    window.location.reload(); // ou use logout() do AuthContext
                   }}
                   className="dropdown-item"
                 >
@@ -117,7 +108,6 @@ const Header = (props) => {
           </Link>
         )}
 
-        {/* ÍCONE DO CARRINHO - Mantido, mas com mais espaço do usuário */}
         <div className="position-relative">
           <i
             role="button"
