@@ -13,18 +13,18 @@ const Header = (props) => {
 
   return (
     <header
-      className="navbar navbar-dark d-flex align-items-center justify-content-between px-4"
+      className="navbar navbar-dark d-flex align-items-center justify-content-between px-5"
       style={{
-        backgroundColor: "#1B0A2A", // Fundo escuro roxo
+        backgroundColor: "#1B0A2A",
         height: "80px",
         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
       }}
     >
-      {/* LOGO COM IMAGEM FUTURISTA */}
+      {/* LOGO COM IMAGEM FUTURISTA - Aproximado levemente da barra de busca */}
       <div
         id="logo"
         role="button"
-        className="d-flex align-items-center"
+        className="d-flex align-items-center ms-4"
         style={{ gap: "10px" }}
       >
         <div>
@@ -46,7 +46,7 @@ const Header = (props) => {
             maxWidth: "400px",
             backgroundColor: "#824FD1",
             border: "2px solid #824FD1",
-            color: "#fff", // Texto digitado branco
+            color: "#fff",
             fontSize: "1rem",
             padding: "8px 12px",
           }}
@@ -55,13 +55,13 @@ const Header = (props) => {
 
       <style jsx="true">{`
         input::placeholder {
-          color: white !important; /* Agora o placeholder "Buscar games" ficará branco */
+          color: white !important;
           opacity: 1;
         }
       `}</style>
 
-      {/* PERFIL DO USUÁRIO E CARRINHO */}
-      <div className="d-flex align-items-center gap-3">
+      {/* PERFIL DO USUÁRIO E CARRINHO - Aproximados levemente da barra de busca e agora com mais espaço entre eles */}
+      <div className="d-flex align-items-center gap-5 me-4">
         {usuario ? (
           <div className="dropdown">
             <div
@@ -70,9 +70,7 @@ const Header = (props) => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <span className="text-light">
-                Olá, {usuario.nome.split(" ")[0]}!
-              </span>
+              <span className="text-light">Olá, {usuario.nome.split(" ")[0]}!</span>
               <img
                 src={`https://ui-avatars.com/api/?name=${usuario.nome}&background=2b87ae&color=fff`}
                 alt={usuario.nome}
@@ -81,10 +79,7 @@ const Header = (props) => {
                 height="40"
               />
             </div>
-            <ul
-              className="dropdown-menu dropdown-menu-dark dropdown-menu-end"
-              aria-labelledby="dropdownPerfil"
-            >
+            <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
               {usuario.role === "ADMIN" && (
                 <li>
                   <Link to={"/admin/painel"} className="dropdown-item">
@@ -122,7 +117,7 @@ const Header = (props) => {
           </Link>
         )}
 
-        {/* ÍCONE DO CARRINHO - MANTIDO COMO ANTES */}
+        {/* ÍCONE DO CARRINHO - Mantido, mas com mais espaço do usuário */}
         <div className="position-relative">
           <i
             role="button"
