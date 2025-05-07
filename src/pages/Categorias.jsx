@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaRunning, FaDragon, FaPuzzlePiece, FaShieldAlt, FaCar, FaFutbol, FaCogs, FaSkullCrossbones } from "react-icons/fa";
 
+
 const Categorias = () => {
   const [categories, setCategories] = useState([
     { id: 1, name: "Aventura", icon: <FaRunning /> },
