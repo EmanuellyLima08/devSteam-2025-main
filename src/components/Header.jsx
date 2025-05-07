@@ -29,8 +29,7 @@ const Header = (props) => {
       >
         <div>
           <img
-            src="/attachments/wBLsn18iHKN6xG2bKDeaP.png"
-            alt="Logo Futurista"
+            src="/src/img/logo-dev-steam.png"
             style={{ width: "45px", height: "45px", objectFit: "contain" }}
           />
         </div>
