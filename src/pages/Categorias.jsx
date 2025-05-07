@@ -5,6 +5,7 @@ import {
   FaCar, FaFutbol, FaCogs, FaSkullCrossbones
 } from "react-icons/fa";
 
+
 const Categorias = () => {
   const [categories, setCategories] = useState([
     { id: 1, name: "Aventura", icon: <FaRunning /> },
