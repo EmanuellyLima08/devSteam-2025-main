@@ -116,7 +116,7 @@ const OutrosJogos = ({ onAddCarrinho }) => {
             onClick={() => setJogoSelecionado(item)}
             style={{
               cursor: "pointer",
-              backgroundColor: "#9b4de0",
+              backgroundColor: "#824FD1",
               borderRadius: "5px",
               overflow: "hidden",
             }}
@@ -131,18 +131,22 @@ const OutrosJogos = ({ onAddCarrinho }) => {
                 objectFit: "cover",
               }}
             />
-            <div className="p-3 flex-grow-1 text-white">
-              <h5 className="fw-bold mb-1">{item.titulo.toUpperCase()}</h5>
-              <p className="mb-1" style={{ color: "#e0d3f8" }}>
+            <div className="p-3 flex-grow-1">
+              <h5 className="fw-bold mb-1 text-white">
+                {item.titulo.toUpperCase()}
+              </h5>
+              <p className="mb-1" style={{ color: "#bfa8d6" }}>
                 {item.categoria}
               </p>
-              <h4 className="fw-bold">{formatarMoeda(item.preco)}</h4>
+              <h4 className="fw-bold text-white">
+                {formatarMoeda(item.preco)}
+              </h4>
             </div>
             <div className="me-3">
               <button
                 className="btn fw-bold"
                 style={{
-                  backgroundColor: "#ea84ff",
+                  backgroundColor: "#C77DFF",
                   color: "white",
                   border: "none",
                 }}
@@ -175,15 +179,25 @@ const OutrosJogos = ({ onAddCarrinho }) => {
             role="document"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="modal-content bg-dark text-light">
-              <div className="modal-header">
-                <h5 className="modal-title">{jogoSelecionado.titulo}</h5>
+            <div
+              className="modal-content"
+              style={{
+                backgroundColor: "#2c1a47",
+                color: "#f1f1f1",
+              }}
+            >
+              <div className="modal-header border-0">
+                <h5 className="modal-title text-uppercase fw-bold" style={{ color: "#9d4edd" }}>
+                  {jogoSelecionado.titulo}
+                </h5>
                 <button
                   type="button"
-                  className="btn-close btn-close-white"
+                  className="btn-close"
+                  style={{ filter: "invert(1)" }}
                   onClick={() => setJogoSelecionado(null)}
                 ></button>
               </div>
+
               <div className="modal-body row g-4">
                 <div className="col-md-4 text-center">
                   <img
@@ -197,31 +211,40 @@ const OutrosJogos = ({ onAddCarrinho }) => {
                   />
                 </div>
                 <div className="col-md-8">
-                  <p>
-                    <strong>Gênero:</strong> {jogoSelecionado.categoria}
+                  <p style={{ color: "#bfa8d6" }}>
+                    <strong style={{ color: "#f1f1f1" }}>Gênero:</strong> {jogoSelecionado.categoria}
+                  </p>
+                  <p style={{ color: "#bfa8d6" }}>
+                    <strong style={{ color: "#f1f1f1" }}>Descrição:</strong> {jogoSelecionado.descricao}
+                  </p>
+                  <p style={{ color: "#bfa8d6" }}>
+                    <strong style={{ color: "#f1f1f1" }}>Preço original:</strong> {formatarMoeda(jogoSelecionado.preco)}
+                  </p>
+                  <p style={{ color: "#bfa8d6" }}>
+                    <strong style={{ color: "#f1f1f1" }}>Desconto:</strong> {jogoSelecionado.desconto}%
                   </p>
                   <p>
-                    <strong>Descrição:</strong> {jogoSelecionado.descricao}
-                  </p>
-                  <p>
-                    <strong>Preço original:</strong>{" "}
-                    {formatarMoeda(jogoSelecionado.preco)}
-                  </p>
-                  <p>
-                    <strong>Desconto:</strong> {jogoSelecionado.desconto}%
-                  </p>
-                  <p>
-                    <strong>Preço final:</strong>{" "}
-                    {formatarMoeda(
-                      jogoSelecionado.preco -
+                    <strong style={{ color: "#f1f1f1" }}>Preço final:</strong>{" "}
+                    <span className="fw-bold" style={{ color: "#ff4dff" }}>
+                      {formatarMoeda(
+                        jogoSelecionado.preco -
                         (jogoSelecionado.preco * jogoSelecionado.desconto) / 100
-                    )}
+                      )}
+                    </span>
                   </p>
                 </div>
               </div>
-              <div className="modal-footer">
+
+              <div className="modal-footer border-0">
                 <button
-                  className="btn btn-success"
+                  className="btn"
+                  style={{
+                    backgroundColor: "#9d4edd",
+                    color: "#f1f1f1",
+                    border: "none",
+                  }}
+                  onMouseOver={(e) => (e.target.style.backgroundColor = "#c77dff")}
+                  onMouseOut={(e) => (e.target.style.backgroundColor = "#9d4edd")}
                   onClick={() => {
                     onAddCarrinho(jogoSelecionado);
                     setJogoSelecionado(null);
@@ -230,7 +253,12 @@ const OutrosJogos = ({ onAddCarrinho }) => {
                   Adicionar ao Carrinho
                 </button>
                 <button
-                  className="btn btn-secondary"
+                  className="btn"
+                  style={{
+                    backgroundColor: "#3c2a58",
+                    color: "#f1f1f1",
+                    border: "none",
+                  }}
                   onClick={() => setJogoSelecionado(null)}
                 >
                   Fechar

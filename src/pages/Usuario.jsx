@@ -7,7 +7,6 @@ const Usuario = () => {
   const [editando, setEditando] = useState(false);
   const [editandoCartao, setEditandoCartao] = useState(false);
 
-  // Estado para os dados do usuário
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -52,10 +51,8 @@ const Usuario = () => {
     e.preventDefault();
     setEditando(false);
 
-    // Obtém os dados existentes do localStorage
     const existingData = JSON.parse(localStorage.getItem("devlogin")) || {};
 
-    // Atualiza apenas os campos editáveis, mantendo os demais
     const updatedData = {
       ...existingData,
       nome: nomeUsuario,
@@ -65,17 +62,16 @@ const Usuario = () => {
       email,
     };
 
-    // Salva os dados atualizados no localStorage
     localStorage.setItem("devlogin", JSON.stringify(updatedData));
   };
 
   const renderCartaoVisual = () => (
     <div
       style={{
-        backgroundColor: "#999",
+        backgroundColor: "#3c2a58",
         padding: "20px",
         borderRadius: "10px",
-        color: "white",
+        color: "#f1f1f1",
         width: "300px",
         height: "180px",
         position: "relative",
@@ -111,24 +107,24 @@ const Usuario = () => {
       case "dados":
         return (
           <div>
-            <h4>Meus Dados</h4>
+            <h4 style={{ color: "#9d4edd" }}>Meus Dados</h4>
             {!editando ? (
-              <div>
-                <p>
-                  <strong>Nome:</strong> {nomeUsuario}
-                </p>
-                <p>
-                  <strong>Data de nascimento:</strong> {dataNascimento}
-                </p>
+              <div style={{ color: "#f1f1f1" }}>
+                <p><strong>Nome:</strong> {nomeUsuario}</p>
+                <p><strong>Data de nascimento:</strong> {dataNascimento}</p>
                 <button
-                  className="btn btn-outline-primary"
+                  className="btn"
+                  style={{
+                    borderColor: "#9d4edd",
+                    color: "#9d4edd",
+                  }}
                   onClick={() => editarDados()}
                 >
                   Editar
                 </button>
               </div>
             ) : (
-              <form onSubmit={(e) => salvaDados(e)}>
+              <form onSubmit={(e) => salvaDados(e)} style={{ color: "#f1f1f1" }}>
                 <div className="mb-3">
                   <label className="form-label">Nome completo</label>
                   <input
@@ -178,7 +174,7 @@ const Usuario = () => {
                     placeholder="Digite seu email"
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" style={{ backgroundColor: "#9d4edd", borderColor: "#9d4edd" }}>
                   Salvar
                 </button>
               </form>
@@ -188,24 +184,21 @@ const Usuario = () => {
 
       case "cartoes":
         return (
-          <div>
-            <h4>Cartão</h4>
+          <div style={{ color: "#f1f1f1" }}>
+            <h4 style={{ color: "#9d4edd" }}>Cartão</h4>
             <div className="row">
               <div className="col-md-6">
                 {!editandoCartao ? (
                   <div>
-                    <p>
-                      <strong>Número:</strong>{" "}
-                      {numeroCartao || "•••• •••• •••• ••••"}
-                    </p>
-                    <p>
-                      <strong>Nome:</strong> {nomeCartao || "NOME COMPLETO"}
-                    </p>
-                    <p>
-                      <strong>Validade:</strong> {validadeCartao || "MM/AA"}
-                    </p>
+                    <p><strong>Número:</strong> {numeroCartao || "•••• •••• •••• ••••"}</p>
+                    <p><strong>Nome:</strong> {nomeCartao || "NOME COMPLETO"}</p>
+                    <p><strong>Validade:</strong> {validadeCartao || "MM/AA"}</p>
                     <button
-                      className="btn btn-outline-primary"
+                      className="btn"
+                      style={{
+                        borderColor: "#9d4edd",
+                        color: "#9d4edd",
+                      }}
                       onClick={() => setEditandoCartao(true)}
                     >
                       Editar
@@ -230,9 +223,7 @@ const Usuario = () => {
                       />
                     </div>
                     <div className="mb-3">
-                      <label className="form-label">
-                        *Nome impresso no cartão
-                      </label>
+                      <label className="form-label">*Nome impresso no cartão</label>
                       <input
                         type="text"
                         className="form-control"
@@ -253,9 +244,7 @@ const Usuario = () => {
                         />
                       </div>
                       <div style={{ flex: 1 }}>
-                        <label className="form-label">
-                          *Código de segurança
-                        </label>
+                        <label className="form-label">*Código de segurança</label>
                         <input
                           type="text"
                           className="form-control"
@@ -264,7 +253,7 @@ const Usuario = () => {
                         />
                       </div>
                     </div>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary" style={{ backgroundColor: "#9d4edd", borderColor: "#9d4edd" }}>
                       Salvar
                     </button>
                   </form>
@@ -280,8 +269,8 @@ const Usuario = () => {
       case "sair":
         return (
           <div>
-            <h4>Sair da conta?</h4>
-            <button className="btn btn-primary" onClick={() => closeLogin()}>
+            <h4 style={{ color: "#9d4edd" }}>Sair da conta?</h4>
+            <button className="btn btn-primary" onClick={() => closeLogin()} style={{ backgroundColor: "#ff4dff", borderColor: "#ff4dff" }}>
               Sair
             </button>
           </div>
@@ -293,7 +282,7 @@ const Usuario = () => {
   };
 
   return (
-    <div className="container-fluid mt-4">
+    <div className="container-fluid mt-4" style={{ backgroundColor: "#1a1125", minHeight: "100vh" }}>
       <div className="row">
         <div className="col-md-3">
           <div className="list-group">
@@ -302,9 +291,12 @@ const Usuario = () => {
                 setAbaAtiva("dados");
                 setEditando(false);
               }}
-              className={`list-group-item list-group-item-action ${
-                abaAtiva === "dados" ? "active" : ""
-              }`}
+              className={`list-group-item list-group-item-action ${abaAtiva === "dados" ? "active" : ""}`}
+              style={{
+                backgroundColor: abaAtiva === "dados" ? "#9d4edd" : "#2c1a47",
+                color: "#f1f1f1",
+                border: "none",
+              }}
             >
               Editar Meus Dados
             </button>
@@ -313,22 +305,28 @@ const Usuario = () => {
                 setAbaAtiva("cartoes");
                 setEditandoCartao(false);
               }}
-              className={`list-group-item list-group-item-action ${
-                abaAtiva === "cartoes" ? "active" : ""
-              }`}
+              className={`list-group-item list-group-item-action ${abaAtiva === "cartoes" ? "active" : ""}`}
+              style={{
+                backgroundColor: abaAtiva === "cartoes" ? "#9d4edd" : "#2c1a47",
+                color: "#f1f1f1",
+                border: "none",
+              }}
             >
               Cartões
             </button>
             <button
               onClick={() => setAbaAtiva("sair")}
-              className="list-group-item list-group-item-action text-danger"
+              className="list-group-item list-group-item-action"
+              style={{ backgroundColor: "#2c1a47", color: "#ff4dff", border: "none" }}
             >
               Sair
             </button>
           </div>
         </div>
         <div className="col-md-9">
-          <div className="card p-4 shadow-sm">{renderConteudo()}</div>
+          <div className="card p-4 shadow-sm" style={{ backgroundColor: "#2c1a47", color: "#f1f1f1", border: "none" }}>
+            {renderConteudo()}
+          </div>
         </div>
       </div>
     </div>
