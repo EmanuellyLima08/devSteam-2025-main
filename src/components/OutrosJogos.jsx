@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import GameCard from "./GameCard";
 
-const OutrosJogos = () => {
+const OutrosJogos = ({ onAddCarrinho }) => { // Adicionando onAddCarrinho como propriedade
   const [jogoSelecionado, setJogoSelecionado] = useState(null);
 
   const games = useMemo(
@@ -139,6 +139,15 @@ const OutrosJogos = () => {
                 </div>
               </div>
               <div className="modal-footer">
+                <button
+                  className="btn btn-success"
+                  onClick={() => {
+                    onAddCarrinho(jogoSelecionado); // Adiciona ao carrinho
+                    setJogoSelecionado(null); // Fecha o modal
+                  }}
+                >
+                  Adicionar ao Carrinho
+                </button>
                 <button className="btn btn-secondary" onClick={() => setJogoSelecionado(null)}>
                   Fechar
                 </button>

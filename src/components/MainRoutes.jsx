@@ -10,6 +10,7 @@ import Cupons from "../pages/Cupons";
 import Jogos from "../pages/Jogos";
 import AdminPainel from "./AdminPainel";
 import Usuario from "../pages/Usuario";
+import Checkout from "../pages/Checkout"; // Adicionado para corrigir o erro
 
 export default function MainRoutes() {
   const { loading } = useAuth();
@@ -36,9 +37,12 @@ export default function MainRoutes() {
 
   return (
     <Routes>
-      {/* Rota pública */}
+      {/* Rotas públicas */}
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
+
+      {/* Rota de Checkout adicionada */}
+      <Route path="/checkout" element={<Checkout />} />
 
       {/* Rotas protegidas para ADMIN */}
       <Route
@@ -82,13 +86,14 @@ export default function MainRoutes() {
         }
       />
       <Route 
-      path="/admin/gerenciarcupons"
-      element={
-        <ProtectedRoute role="ADMIN">
-          <Cupons />
-        </ProtectedRoute>
-      }
-/>
+        path="/admin/gerenciarcupons"
+        element={
+          <ProtectedRoute role="ADMIN">
+            <Cupons />
+          </ProtectedRoute>
+        }
+      />
+      
       {/* Rota protegida para usuário CLIENTE */}
       <Route
         path="/usuario"

@@ -9,15 +9,20 @@ import Footer from "./components/footer";
 function App() {
   const [carrinhoItem, setCarrinhoItem] = useState([]);
 
+  // Salvar carrinho no LocalStorage sempre que houver alteração
   useEffect(() => {
     localStorage.setItem("devcarrinho", JSON.stringify(carrinhoItem));
   }, [carrinhoItem]);
 
+  // Recuperar carrinho salvo no LocalStorage ao carregar a página
   useEffect(() => {
     const salvaCarrinho = localStorage.getItem("devcarrinho");
-    salvaCarrinho && setCarrinhoItem(JSON.parse(salvaCarrinho));
+    if (salvaCarrinho) {
+      setCarrinhoItem(JSON.parse(salvaCarrinho));
+    }
   }, []);
 
+  // Função para adicionar um item ao carrinho
   const handleAddCarrinho = (produto) => {
     setCarrinhoItem((itemAnterior) => {
       const existe = itemAnterior.find((item) => item.id === produto.id);
@@ -32,11 +37,32 @@ function App() {
     });
   };
 
+  // Função para atualizar a quantidade de um item no carrinho
+  const handleUpdateCarrinho = (produto, novaQuantidade) => {
+    setCarrinhoItem((itemAnterior) =>
+      itemAnterior.map((item) =>
+        item.id === produto.id ? { ...item, quantidade: novaQuantidade } : item
+      )
+    );
+  };
+
+  // Função para remover um item do carrinho
+  const handleRemoveCarrinho = (produto) => {
+    setCarrinhoItem((itemAnterior) =>
+      itemAnterior.filter((item) => item.id !== produto.id)
+    );
+  };
+
   return (
     <div className="App">
       <Header />
       <Promotion onAddCarrinho={handleAddCarrinho} />
-      <CarrinhoOffCanvas carrinhoItem={carrinhoItem} />
+      {/* Agora passando as funções corretas para o CarrinhoOffCanvas */}
+      <CarrinhoOffCanvas 
+        carrinhoItem={carrinhoItem}
+        onUpdateCarrinho={handleUpdateCarrinho}
+        onRemoveCarrinho={handleRemoveCarrinho}
+      />
       <OutrosJogos onAddCarrinho={handleAddCarrinho} />
       <Footer />
     </div>
