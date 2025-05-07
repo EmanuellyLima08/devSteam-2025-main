@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom"; // Importa o Link do React Router
 import styles from "./Footer.module.css";
+
 const Footer = () => {
   return (
     <footer className={styles.footer} aria-label="Rodapé">
       <div className={styles.centerContent}>
         <div id="logo" role="button" className={styles.logo}>
-          <i className="bi bi-controller fs-3 text-light"></i>
-          {/* Coloca o Link aqui */}
+          <img src="/src/img/logo-dev-steam.png" alt="Logo DevSteam" className={styles.logoImage} />
           <Link to="/" className="navbar-brand fw-bold fs-5 m-0">
             DevSteam
           </Link>
