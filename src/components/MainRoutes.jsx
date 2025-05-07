@@ -11,7 +11,6 @@ import Jogos from "../pages/Jogos";
 import AdminPainel from "./AdminPainel";
 import Usuario from "../pages/Usuario";
 import Checkout from "../pages/Checkout"; // Adicionado para corrigir o erro
-import Checkout from "../pages/Checkout"; // Importe a página de Checkout
 
 export default function MainRoutes() {
   const { loading } = useAuth();
@@ -94,24 +93,13 @@ export default function MainRoutes() {
           </ProtectedRoute>
         }
       />
-    
-
+      
       {/* Rota protegida para usuário CLIENTE */}
       <Route
         path="/usuario"
         element={
           <ProtectedRoute role="CLIENTE">
             <Usuario />
-          </ProtectedRoute>
-        }
-      />
-      
-      {/* Rota para o Checkout */}
-      <Route
-        path="/checkout"
-        element={
-          <ProtectedRoute role="CLIENTE">
-            <Checkout />
           </ProtectedRoute>
         }
       />
