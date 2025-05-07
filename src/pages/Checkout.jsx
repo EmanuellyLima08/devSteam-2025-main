@@ -45,7 +45,6 @@ const Checkout = () => {
     const novoCarrinho = carrinho.filter((produto) => produto.id !== item.id);
     setCarrinho(novoCarrinho);
     localStorage.setItem("devcarrinho", JSON.stringify(novoCarrinho));
-
     if (novoCarrinho.length === 0) {
       navigate("/");
     }
@@ -68,25 +67,22 @@ const Checkout = () => {
   };
 
   return (
-    <div className="container py-4">
+    <div className="container py-4" style={{ backgroundColor: "#1a1125", minHeight: "100vh", color: "#f1f1f1" }}>
       <div className="row">
-        {/* ... Coluna do carrinho permanece a mesma ... */}
         <div className="col-lg-8">
-          <div
-            className="card border-0 shadow-sm rounded-4 mb-4"
-            style={{ background: "#d9d9d9" }}
-          >
-            <div className="card-header border-bottom-0 py-3">
-              <h4 className="mb-0 fw-bolder">Meu Carrinho</h4>
+          <div className="card border-0 shadow-sm rounded-4 mb-4" style={{ backgroundColor: "#2c1a47", color: "#f1f1f1" }}>
+            <div className="card-header border-0 py-3" style={{ backgroundColor: "#2c1a47" }}>
+              <h4 className="mb-0 fw-bolder" style={{ color: "#9d4edd" }}>Meu Carrinho</h4>
             </div>
             <div className="card-body p-4">
               {carrinho.length === 0 ? (
                 <div className="text-center py-5">
                   <i className="bi bi-cart-x fs-1 text-muted"></i>
-                  <p className="mt-3 mb-0">Seu carrinho está vazio.</p>
+                  <p className="mt-3 mb-0 text-secondary">Seu carrinho está vazio.</p>
                   <button
                     id="addCarrinho"
-                    className="btn btn-success desconto border-0 px-3 py-2 text-light mt-3"
+                    className="btn border-0 px-3 py-2 mt-3 fw-bold"
+                    style={{ backgroundColor: "#9d4edd", color: "#f1f1f1" }}
                     onClick={() => navigate("/")}
                   >
                     Continuar Comprando
@@ -106,11 +102,12 @@ const Checkout = () => {
                       </div>
                       <div className="col-md-6 col-8">
                         <h5 className="fw-bold mb-1">{item.titulo}</h5>
-                        <small className="text-muted">ID: #{item.id}</small>
+                        <small className="text-secondary">ID: #{item.id}</small>
                         <div className="d-flex align-items-center mt-3">
                           <button
                             onClick={() => handleRemoverItem(item)}
-                            className="btn btn-sm btn-outline-danger border-0"
+                            className="btn btn-sm border-0"
+                            style={{ color: "#ff4dff" }}
                           >
                             <i className="bi bi-trash me-1"></i> Remover
                           </button>
@@ -119,31 +116,20 @@ const Checkout = () => {
                       <div className="col-md-4 col-12 mt-3 mt-md-0">
                         <div className="row align-items-center">
                           <div className="col-4 col-md-5">
-                            <div className="border border-dark-subtle border-1 d-flex align-items-center rounded-4 gap-2">
+                            <div className="border border-light-subtle d-flex align-items-center rounded-4 gap-2 px-2">
                               <button
-                                className="btn border-0"
-                                type="button"
+                                className="btn btn-sm text-light border-0"
+                                style={{ backgroundColor: "#3c2a58" }}
                                 disabled={item.quantidade === 1}
-                                onClick={() =>
-                                  handleUpdateQuantidade(
-                                    item,
-                                    item.quantidade - 1
-                                  )
-                                }
+                                onClick={() => handleUpdateQuantidade(item, item.quantidade - 1)}
                               >
                                 -
                               </button>
                               <span>{item.quantidade}</span>
-
                               <button
-                                className="btn border-0"
-                                type="button"
-                                onClick={() =>
-                                  handleUpdateQuantidade(
-                                    item,
-                                    item.quantidade + 1
-                                  )
-                                }
+                                className="btn btn-sm text-light border-0"
+                                style={{ backgroundColor: "#3c2a58" }}
+                                onClick={() => handleUpdateQuantidade(item, item.quantidade + 1)}
                               >
                                 +
                               </button>
@@ -151,20 +137,17 @@ const Checkout = () => {
                           </div>
                           <div className="col-6 text-end">
                             <div className="d-flex flex-column">
-                              <small className="text-decoration-line-through text-muted">
+                              <small className="text-decoration-line-through text-secondary">
                                 {formatarMoeda(item.preco)}
                               </small>
-                              <span className="fw-bold text-danger fs-5">
-                                {formatarMoeda(
-                                  item.preco -
-                                    (item.preco * item.desconto) / 100
-                                )}
+                              <span className="fw-bold fs-5" style={{ color: "#ff4dff" }}>
+                                {formatarMoeda(item.preco - (item.preco * item.desconto) / 100)}
                               </span>
                             </div>
                           </div>
                         </div>
                       </div>
-                      {index < carrinho.length - 1 && <hr className="my-3" />}
+                      {index < carrinho.length - 1 && <hr className="my-3" style={{ borderColor: "#3c2a58" }} />}
                     </div>
                   ))}
                 </>
@@ -174,25 +157,17 @@ const Checkout = () => {
         </div>
 
         <div className="col-lg-4">
-          <div
-            className="card border-0 shadow-sm rounded-4"
-            style={{ background: "#d9d9d9" }}
-          >
-            <div className="card-header border-bottom-0 py-3">
-              <h4 className="mb-0 fw-bolder">Resumo do Pedido</h4>
+          <div className="card border-0 shadow-sm rounded-4" style={{ backgroundColor: "#2c1a47", color: "#f1f1f1" }}>
+            <div className="card-header border-0 py-3" style={{ backgroundColor: "#2c1a47" }}>
+              <h4 className="mb-0 fw-bolder" style={{ color: "#9d4edd" }}>Resumo do Pedido</h4>
             </div>
             <div className="card-body p-4 pt-3">
-              {/* Seção do cupom de desconto - AGORA NO TOPO */}
               <div className="mb-3">
-                <label htmlFor="cupom" className="form-label mb-2">
-                  cupom de desconto
-                </label>
+                <label htmlFor="cupom" className="form-label mb-2 text-light">Cupom de desconto</label>
                 <div className="input-group">
                   <input
                     type="text"
-                    className={`form-control ${
-                      cupomError ? "is-invalid" : ""
-                    } bg-transparent border-dark-subtle`}
+                    className={`form-control bg-transparent border-light-subtle text-light ${cupomError ? "is-invalid" : ""}`}
                     id="cupom"
                     placeholder="Digite seu cupom"
                     value={cupom}
@@ -202,19 +177,15 @@ const Checkout = () => {
                   />
                   {!cupomAplicado ? (
                     <button
-                      id="addCarrinho"
-                      className="btn btn-success desconto text-light border-0"
+                      className="btn border-0 fw-bold"
+                      style={{ backgroundColor: "#9d4edd", color: "#f1f1f1" }}
                       type="button"
                       onClick={aplicarCupom}
                     >
                       Aplicar
                     </button>
                   ) : (
-                    <button
-                      className="btn btn-outline-danger"
-                      type="button"
-                      onClick={removerCupom}
-                    >
+                    <button className="btn btn-outline-danger" type="button" onClick={removerCupom}>
                       <i className="bi bi-x"></i>
                     </button>
                   )}
@@ -224,45 +195,36 @@ const Checkout = () => {
                 )}
               </div>
 
-              {/* PRIMEIRO DIVISOR */}
-              <hr className="my-3" />
+              <hr className="my-3" style={{ borderColor: "#3c2a58" }} />
 
-              {/* Seção de subtotal e frete */}
               <div className="d-flex justify-content-between mb-2">
-                <span>
-                  Subtotal ({carrinho.length}{" "}
-                  {carrinho.length === 1 ? "item" : "itens"})
+                <span className="text-secondary">
+                  Subtotal ({carrinho.length} {carrinho.length === 1 ? "item" : "itens"})
                 </span>
                 <span>{formatarMoeda(subtotal)}</span>
               </div>
               <div className="d-flex justify-content-between mb-2">
-                <span>Frete</span>
+                <span className="text-secondary">Frete</span>
                 <span className="text-success">Grátis</span>
               </div>
 
-              {/* Exibe o desconto do cupom quando aplicado */}
               {cupomAplicado && (
                 <div className="d-flex justify-content-between mb-2 mt-2">
                   <span className="text-success">Desconto (10%)</span>
-                  <span className="text-success">
-                    -{formatarMoeda(descontoCupom)}
-                  </span>
+                  <span className="text-success">-{formatarMoeda(descontoCupom)}</span>
                 </div>
               )}
 
-              {/* SEGUNDO DIVISOR */}
-              <hr className="my-3" />
+              <hr className="my-3" style={{ borderColor: "#3c2a58" }} />
 
-              {/* Seção do total */}
               <div className="d-flex justify-content-between mb-4">
-                <span className="fw-bold">Total</span>
-                <span className="fw-bold fs-4">{formatarMoeda(total)}</span>
+                <span className="fw-bold text-light">Total</span>
+                <span className="fw-bold fs-4" style={{ color: "#c77dff" }}>{formatarMoeda(total)}</span>
               </div>
 
-              {/* Botões de ação */}
               <button
-                id="addCarrinho"
-                className="btn btn-success desconto border-0 text-light w-100 py-3 fw-bold"
+                className="btn border-0 text-light w-100 py-3 fw-bold"
+                style={{ backgroundColor: "#9d4edd" }}
                 onClick={handleConfirmar}
                 disabled={carrinho.length === 0}
               >
@@ -271,11 +233,11 @@ const Checkout = () => {
 
               <button
                 style={{
-                  background: isHovered && "#2a475e",
-                  borderColor: "#2a475e",
-                  color: !isHovered && "#2a475e",
+                  backgroundColor: isHovered ? "#c77dff" : "transparent",
+                  borderColor: "#c77dff",
+                  color: isHovered ? "#1a1125" : "#c77dff"
                 }}
-                className="btn btn-outline-secondary w-100 mt-2"
+                className="btn w-100 mt-2 fw-bold"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={() => navigate("/")}
