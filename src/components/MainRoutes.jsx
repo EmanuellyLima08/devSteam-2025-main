@@ -12,6 +12,7 @@ import Jogos from "../pages/Jogos";
 import AdminPainel from "./AdminPainel";
 import Usuario from "../pages/Usuario";
 import Checkout from "../pages/Checkout"; // Adicionado para corrigir o erro
+import Footer from "./Footer";
 
 export default function MainRoutes() {
   const { usuario, loading } = useAuth();
@@ -106,6 +107,7 @@ export default function MainRoutes() {
         }
       />
     </Routes>
+    <Footer />
     </>
   );
 }

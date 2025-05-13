@@ -5,12 +5,11 @@ const Footer = () => {
   return (
     <footer className={styles.footer} aria-label="Rodapé">
       <div className={styles.centerContent}>
-        <div id="logo" role="button" className={styles.logo}>
-          <img src="/src/img/logo-dev-steam.png" alt="Logo DevSteam" className={styles.logoImage} />
-          <Link to="/" className="navbar-brand fw-bold fs-5 m-0">
-            DevSteam
-          </Link>
-        </div>
+      <Link to="/" id="logo" className={`${styles.logo} text-decoration-none`} role="button">
+  <img src="/src/img/logo-dev-steam.png" alt="Logo DevSteam" className={styles.logoImage} />
+  <span className="navbar-brand fw-bold fs-5 m-0 text-light">DevSteam</span>
+</Link>
+
         <p className={styles.direitos}>Todos os direitos reservados ©</p>
         <div className={styles.social}>
           <a href="https://tiktok.com" target="_blank" rel="noreferrer">

@@ -63,7 +63,6 @@ function App() {
         onRemoveCarrinho={handleRemoveCarrinho}
       />
       <OutrosJogos onAddCarrinho={handleAddCarrinho} />
-      <Footer />
     </div>
   );
 }
