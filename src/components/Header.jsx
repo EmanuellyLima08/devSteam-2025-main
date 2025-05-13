@@ -15,18 +15,21 @@ const Header = (props) => {
       }}
     >
       {/* LOGO */}
-      <div
-        id="logo"
-        role="button"
-        className="d-flex align-items-center"
-        style={{ gap: "10px" }}
-      >
-        <img
-          src="/src/img/logo-dev-steam.png"
-          style={{ width: "45px", height: "45px", objectFit: "contain" }}
-        />
-        <span className="fw-bold fs-3 text-light devsteam-title">DevSteam</span>
-      </div>
+      <Link
+  to="/"
+  id="logo"
+  className="d-flex align-items-center ms-4 text-decoration-none"
+  style={{ gap: "10px" }}
+>
+  <div>
+    <img
+      src="/src/img/logo-dev-steam.png"
+      style={{ width: "45px", height: "45px", objectFit: "contain" }}
+      alt="Logo DevSteam"
+    />
+  </div>
+  <span className="fw-bold fs-3 text-light">DevSteam</span>
+</Link>
 
       {/* BUSCA (só no desktop) */}
       <div className="d-none d-md-flex w-50 justify-content-center">
