@@ -6,7 +6,7 @@ const AdminPainel = () => {
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#1e0659",
+        background: "linear-gradient(135deg, #3b0066, #5e0099)", // Gradiente roxo escuro para roxo claro
         padding: "10px 15px 30px", // margens ajustadas para valores menores
         color: "#f5f5f5",
         fontFamily: "'Roboto', sans-serif",
