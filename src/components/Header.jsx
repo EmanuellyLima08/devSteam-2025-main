@@ -1,37 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // 👈 IMPORTANTE
+import { useAuth } from "../context/AuthContext";
 
 const Header = (props) => {
-  const { usuario } = useAuth(); // 👈 USA O CONTEXTO
+  const { usuario } = useAuth();
 
   return (
     <header
-      className="navbar navbar-dark d-flex align-items-center justify-content-between px-5"
+      className="navbar navbar-dark d-flex align-items-center justify-content-between px-4 px-md-5"
       style={{
         backgroundColor: "#1B0A2A",
         height: "80px",
         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
       }}
     >
-      <Link
-  to="/"
-  id="logo"
-  className="d-flex align-items-center ms-4 text-decoration-none"
-  style={{ gap: "10px" }}
->
-  <div>
-    <img
-      src="/src/img/logo-dev-steam.png"
-      style={{ width: "45px", height: "45px", objectFit: "contain" }}
-      alt="Logo DevSteam"
-    />
-  </div>
-  <span className="fw-bold fs-3 text-light">DevSteam</span>
-</Link>
+      {/* LOGO */}
+      <div
+        id="logo"
+        role="button"
+        className="d-flex align-items-center"
+        style={{ gap: "10px" }}
+      >
+        <img
+          src="/src/img/logo-dev-steam.png"
+          style={{ width: "45px", height: "45px", objectFit: "contain" }}
+        />
+        <span className="fw-bold fs-3 text-light devsteam-title">DevSteam</span>
+      </div>
 
-
-      <div className="d-flex w-50 justify-content-center">
+      {/* BUSCA (só no desktop) */}
+      <div className="d-none d-md-flex w-50 justify-content-center">
         <input
           type="text"
           className="form-control rounded-pill px-4 text-light"
@@ -52,9 +50,43 @@ const Header = (props) => {
           color: white !important;
           opacity: 1;
         }
+
+        @media (max-width: 767px) {
+          header {
+            flex-direction: row !important;
+            height: 60px !important;
+            padding: 5px 15px !important;
+          }
+
+          #logo img {
+            width: 35px !important;
+            height: 35px !important;
+          }
+
+          #logo span {
+            display: block !important;
+            font-size: 1.2rem !important;
+          }
+
+          .user-cart {
+            gap: 10px !important;
+          }
+
+          .dropdown-menu {
+            position: absolute !important;
+            top: 55px !important;
+            right: 10px !important;
+            z-index: 9999;
+          }
+
+          .d-none.d-md-inline {
+            display: inline-block !important;
+          }
+        }
       `}</style>
 
-      <div className="d-flex align-items-center gap-5 me-4">
+      {/* PERFIL E CARRINHO */}
+      <div className="d-flex align-items-center gap-4 user-cart">
         {usuario ? (
           <div className="dropdown">
             <div
@@ -63,7 +95,9 @@ const Header = (props) => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <span className="text-light">Olá, {usuario.nome.split(" ")[0]}!</span>
+              <span className="text-light d-none d-md-inline">
+                Olá, {usuario.nome.split(" ")[0]}!
+              </span>
               <img
                 src={`https://ui-avatars.com/api/?name=${usuario.nome}&background=2b87ae&color=fff`}
                 alt={usuario.nome}
@@ -72,7 +106,7 @@ const Header = (props) => {
                 height="40"
               />
             </div>
-            <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+            <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end mt-2">
               {usuario.role === "ADMIN" && (
                 <li>
                   <Link to={"/admin/painel"} className="dropdown-item">
@@ -90,7 +124,7 @@ const Header = (props) => {
                   to={"/"}
                   onClick={() => {
                     localStorage.removeItem("devlogin");
-                    window.location.reload(); // ou use logout() do AuthContext
+                    window.location.reload();
                   }}
                   className="dropdown-item"
                 >
@@ -106,7 +140,7 @@ const Header = (props) => {
             className="d-flex gap-2 align-items-center text-decoration-none text-light"
           >
             <i className="bi bi-person-circle fs-3"></i>
-            <span className="h6 m-0">Faça login ou cadastre-se</span>
+            <span className="h6 m-0 d-none d-md-inline">Login / Cadastro</span>
           </Link>
         )}
 

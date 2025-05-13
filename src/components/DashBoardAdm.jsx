@@ -3,11 +3,9 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const DashBoardAdm = () => {
-  // chamar a api para trazer o valor de vendasHije
-  // var vendasHoje = 0;
   const [metrics, setMetrics] = useState({
-    vendasHoje: 0, //
-    jogoMaisComprado: 0
+    vendasHoje: 0,
+    jogoMaisComprado: 0,
   });
 
   const [financialData, setFinancialData] = useState({
@@ -21,26 +19,28 @@ const DashBoardAdm = () => {
       "💰 Venda concluída: Cliente XYZ comprou 3 jogos",
       "⚠️ Servidor passará por manutenção amanhã",
     ],
+    quantidadeUsuarios: 0, // Valor fictício para teste
   });
 
   useEffect(() => {
     fetch("https://api.seusite.com/metrics")
       .then((response) => response.json())
       .then((data) => {
-        setMetrics({
-          visitas: data.visitasHoje,
-          tempoMedio: `${data.tempoMedio} min`,
-          conversao: `${data.taxaConversao}%`,
-          statusServidor: data.servidorOnline ? "🟢 Online" : "🔴 Offline",
-        });
-        setFinancialData({
-          ...financialData,
-          lucro: data.lucro,
-          prejuizo: data.prejuizo,
-          jogosMaisVendidos: data.jogosMaisVendidos,
-          jogosMenosVendidos: data.jogosMenosVendidos,
-          notificacoes: data.notificacoes || financialData.notificacoes,
-        });
+        setMetrics((prev) => ({
+          ...prev,
+          vendasHoje: data.vendasHoje ?? 0,
+          jogoMaisComprado: data.jogoMaisComprado ?? 0,
+        }));
+
+        setFinancialData((prev) => ({
+          ...prev,
+          lucro: data.lucro ?? 0,
+          prejuizo: data.prejuizo ?? 0,
+          jogosMaisVendidos: data.jogosMaisVendidos ?? [],
+          jogosMenosVendidos: data.jogosMenosVendidos ?? [],
+          notificacoes: data.notificacoes ?? prev.notificacoes,
+          quantidadeUsuarios: data.quantidadeUsuarios ?? prev.quantidadeUsuarios,
+        }));
       })
       .catch((error) => console.error("Erro ao carregar métricas:", error));
   }, []);
@@ -91,7 +91,7 @@ const DashBoardAdm = () => {
             ))}
           </div>
 
-          {/* Gráfico Coluna - Fundo Branco */}
+          {/* Gráfico Coluna */}
           <div
             className="card shadow-lg p-3 mb-3 text-center"
             style={{ backgroundColor: "#fff", borderRadius: "10px" }}
@@ -104,31 +104,21 @@ const DashBoardAdm = () => {
               <div style={{ textAlign: "center" }}>
                 <div
                   style={{
-                    height: `${financialData.lucro}%`,
+                    height: `${financialData.quantidadeUsuarios}%`,
                     width: "20px",
                     backgroundColor: "#8e44ad",
                     borderRadius: "6px 6px 0 0",
                   }}
                 ></div>
-                <small className="mt-1 fw-bold d-block">Lucro</small>
-                <small>{financialData.lucro}%</small>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    height: `${financialData.prejuizo}%`,
-                    width: "20px",
-                    backgroundColor: "#c0392b",
-                    borderRadius: "6px 6px 0 0",
-                  }}
-                ></div>
-                <small className="mt-1 fw-bold d-block">Prejuízo</small>
-                <small>{financialData.prejuizo}%</small>
+                <small className="mt-1 fw-bold d-block">
+                  Porcentagem de usuários
+                </small>
+                <small>{financialData.quantidadeUsuarios}%</small>
               </div>
             </div>
           </div>
 
-          {/* Gráfico Pizza - Fundo Branco */}
+          {/* Gráfico Pizza */}
           <div
             className="card shadow-lg p-3 text-center"
             style={{ backgroundColor: "#fff", borderRadius: "10px" }}
@@ -141,9 +131,11 @@ const DashBoardAdm = () => {
                 height: "100px",
                 borderRadius: "50%",
                 background: `conic-gradient(
-                #a569bd 0% ${financialData.jogosMaisVendidos.length * 10}%,
-                #f5b7b1 ${financialData.jogosMaisVendidos.length * 10}% 100%
-              )`,
+                  #a569bd 0% ${
+                    financialData.jogosMaisVendidos.length * 10
+                  }%,
+                  #f5b7b1 ${financialData.jogosMaisVendidos.length * 10}% 100%
+                )`,
                 position: "relative",
               }}
             >
@@ -197,10 +189,10 @@ const DashBoardAdm = () => {
                     transition: "transform 0.3s ease-in-out",
                   }}
                   onMouseEnter={(e) =>
-                    (e.target.style.transform = "scale(1.05)")
+                    (e.currentTarget.style.transform = "scale(1.05)")
                   }
                   onMouseLeave={(e) =>
-                    (e.target.style.transform = "scale(1.0)")
+                    (e.currentTarget.style.transform = "scale(1.0)")
                   }
                 >
                   <h5>
@@ -208,7 +200,7 @@ const DashBoardAdm = () => {
                       ? "💵 Vendas Hoje"
                       : key === "jogoMaisComprado"
                       ? "🎮 Jogo mais comprado no mês"
-                      : ""}
+                      : key}
                   </h5>
                   <h3>{value}</h3>
                 </div>
@@ -216,7 +208,7 @@ const DashBoardAdm = () => {
             ))}
           </div>
 
-          {/* Seção de Notificações */}
+          {/* Notificações */}
           <div
             className="p-3 shadow-lg text-center mt-2"
             style={{
