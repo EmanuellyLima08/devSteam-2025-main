@@ -14,20 +14,22 @@ const Header = (props) => {
         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
       }}
     >
-      <div
-        id="logo"
-        role="button"
-        className="d-flex align-items-center ms-4"
-        style={{ gap: "10px" }}
-      >
-        <div>
-          <img
-            src="/src/img/logo-dev-steam.png"
-            style={{ width: "45px", height: "45px", objectFit: "contain" }}
-          />
-        </div>
-        <span className="fw-bold fs-3 text-light">DevSteam</span>
-      </div>
+      <Link
+  to="/"
+  id="logo"
+  className="d-flex align-items-center ms-4 text-decoration-none"
+  style={{ gap: "10px" }}
+>
+  <div>
+    <img
+      src="/src/img/logo-dev-steam.png"
+      style={{ width: "45px", height: "45px", objectFit: "contain" }}
+      alt="Logo DevSteam"
+    />
+  </div>
+  <span className="fw-bold fs-3 text-light">DevSteam</span>
+</Link>
+
 
       <div className="d-flex w-50 justify-content-center">
         <input

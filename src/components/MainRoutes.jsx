@@ -43,7 +43,6 @@ export default function MainRoutes() {
       {/* Rotas públicas */}
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
-
       {/* Rota de Checkout adicionada */}
       <Route path="/checkout" element={<Checkout />} />
 
@@ -101,7 +100,7 @@ export default function MainRoutes() {
       <Route
         path="/usuario"
         element={
-          <ProtectedRoute role="CLIENTE">
+          <ProtectedRoute>
             <Usuario />
           </ProtectedRoute>
         }
